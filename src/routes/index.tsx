@@ -33,12 +33,8 @@ function Home() {
   return (
     <PublicShell>
       <section className="relative isolate overflow-hidden">
-        <img
-          src="/hero/lion.jpg"
-          alt=""
-          className="absolute inset-0 size-full object-cover object-[center_20%]"
-        />
-        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgb(7_7_8/0.94)_0%,rgb(7_7_8/0.72)_48%,rgb(7_7_8/0.42)_100%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_30%,rgb(212_175_55/0.16)_0,transparent_24%),radial-gradient(circle_at_82%_70%,rgb(212_175_55/0.10)_0,transparent_28%),linear-gradient(135deg,rgb(7_7_8)_0%,rgb(15_13_9)_48%,rgb(7_7_8)_100%)]" />
+        <div className="absolute inset-0 opacity-[0.12] bg-[radial-gradient(circle,transparent_0,transparent_45%,rgb(212_175_55/0.35)_46%,transparent_47%)] bg-[length:90px_90px]" />
         <div className="relative mx-auto flex min-h-[32rem] max-w-6xl flex-col justify-center px-4 py-20 md:min-h-[36rem]">
           <p className="text-xs tracking-[0.32em] text-gold uppercase">{settings.hero_subtitle}</p>
           <h1 className="mt-4 max-w-xl font-display text-4xl leading-[1.1] text-fg md:text-6xl">

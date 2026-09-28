@@ -101,11 +101,7 @@ export function SiteHeader() {
             <div className="h-8 w-20 animate-pulse rounded-md bg-surface-2" />
           ) : (
             <>
-              <SignedOut>
-                <Button asChild variant="secondary" size="sm">
-                  <Link to="/login">{tx("Admin Login")}</Link>
-                </Button>
-              </SignedOut>
+
               <SignedIn>
                 {admin ? (
                   <Button asChild size="sm">

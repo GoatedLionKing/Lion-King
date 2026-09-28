@@ -23,9 +23,6 @@ export function SiteFooter() {
           <Link to="/search" search={{ q: "" }} className="hover:text-gold">
             Search
           </Link>
-          <Link to="/login" className="hover:text-gold">
-            Admin
-          </Link>
         </nav>
       </div>
       <div className="border-t border-border py-4 text-center text-xs text-subtle">
