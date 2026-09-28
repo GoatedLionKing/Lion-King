@@ -1,0 +1,176 @@
+-- Development sample catalog. Every downloadable payload is a tiny text file
+-- clearly labeled as a demo — never a real game dump.
+
+insert into games (
+  id, slug, title, description, cover, platform_id, project_type_id, status_id,
+  version, developer, original_release, localization_release, featured, published, is_demo
+) values
+(
+  'game-gow-coo',
+  'god-of-war-chains-of-olympus',
+  'God of War: Chains of Olympus',
+  'Arabic localization project for the PSP chapter of the saga. The archive currently holds an in-progress patch, a custom Arabic font, and dubbed audio stems. Files below are development samples — not commercial game dumps.',
+  '/covers/gow-coo.jpg',
+  'psp',
+  'arabic-localization',
+  'in-progress',
+  '1.1',
+  'Ready at Dawn',
+  '2008-03-04',
+  '2026-03-01',
+  true,
+  true,
+  true
+),
+(
+  'game-gow-gos',
+  'god-of-war-ghost-of-sparta',
+  'God of War: Ghost of Sparta',
+  'Companion PSP localization covering menus, subtitles, and UI. Completed patch set with a matching Arabic font.',
+  '/covers/gow-gos.jpg',
+  'psp',
+  'arabic-localization',
+  'completed',
+  '1.0',
+  'Ready at Dawn',
+  '2010-11-02',
+  '2025-11-18',
+  true,
+  true,
+  true
+),
+(
+  'game-gta-lcs',
+  'grand-theft-auto-liberty-city-stories',
+  'Grand Theft Auto: Liberty City Stories',
+  'Updated Arabic UI and subtitle pack for the PSP edition. Includes a revised font that keeps the original HUD proportions.',
+  '/covers/gta-lcs.jpg',
+  'psp',
+  'arabic-localization',
+  'updated',
+  '1.2',
+  'Rockstar Leeds',
+  '2005-10-25',
+  '2026-01-12',
+  true,
+  true,
+  true
+),
+(
+  'game-sh-origins',
+  'silent-hill-origins',
+  'Silent Hill Origins',
+  'Arabic dubbing pass for key cutscenes plus subtitle files. Work in progress — voice sessions are still being mixed.',
+  '/covers/sh-origins.jpg',
+  'psp',
+  'arabic-dubbing',
+  'in-progress',
+  '0.8',
+  'Climax Studios',
+  '2007-11-06',
+  null,
+  true,
+  true,
+  true
+),
+(
+  'game-re4',
+  'resident-evil-4',
+  'Resident Evil 4',
+  'Full Arabic translation for the PS2 release: menus, item descriptions, and subtitle timing aligned to the original cut.',
+  '/covers/re4.jpg',
+  'ps2',
+  'translation',
+  'completed',
+  '1.0',
+  'Capcom',
+  '2005-10-25',
+  '2025-08-04',
+  false,
+  true,
+  true
+),
+(
+  'game-mgs-pw',
+  'metal-gear-solid-peace-walker',
+  'Metal Gear Solid: Peace Walker',
+  'Upcoming Arabic localization covering codec, mission briefings, and mother-base UI. Files will appear here when the first public build is ready.',
+  '/covers/mgs-pw.jpg',
+  'psp',
+  'arabic-localization',
+  'coming-soon',
+  null,
+  'Kojima Productions',
+  '2010-04-29',
+  null,
+  false,
+  true,
+  true
+),
+(
+  'game-sotc',
+  'shadow-of-the-colossus',
+  'Shadow of the Colossus',
+  'Arabic translation of on-screen prompts, item names, and end titles for the PS2 original.',
+  '/covers/sotc.jpg',
+  'ps2',
+  'translation',
+  'completed',
+  '1.0',
+  'Team Ico',
+  '2005-10-18',
+  '2025-06-21',
+  true,
+  true,
+  true
+),
+(
+  'game-p3p',
+  'persona-3-portable',
+  'Persona 3 Portable',
+  'Custom Arabic UI font that preserves the original menu metrics on PSP. Drop-in replacement, documented installation included.',
+  '/covers/p3p.jpg',
+  'psp',
+  'font',
+  'updated',
+  '1.3',
+  'Atlus',
+  '2009-11-01',
+  '2026-02-02',
+  false,
+  true,
+  true
+)
+on conflict (id) do nothing;
+
+insert into game_categories (game_id, category_id) values
+  ('game-gow-coo', 'action'),
+  ('game-gow-coo', 'handheld'),
+  ('game-gow-gos', 'action'),
+  ('game-gow-gos', 'handheld'),
+  ('game-gta-lcs', 'action'),
+  ('game-gta-lcs', 'handheld'),
+  ('game-sh-origins', 'horror'),
+  ('game-sh-origins', 'handheld'),
+  ('game-re4', 'horror'),
+  ('game-re4', 'action'),
+  ('game-mgs-pw', 'action'),
+  ('game-mgs-pw', 'handheld'),
+  ('game-sotc', 'adventure'),
+  ('game-p3p', 'rpg'),
+  ('game-p3p', 'handheld')
+on conflict do nothing;
+
+insert into versions (id, game_id, name, version_number, description, release_date, sort_order) values
+  ('ver-gow-coo-10', 'game-gow-coo', 'Version 1.0', '1.0', 'First public Arabic patch set.', '2025-09-01', 10),
+  ('ver-gow-coo-11', 'game-gow-coo', 'Version 1.1', '1.1', 'Revised font metrics and patched subtitle timing.', '2026-03-01', 20),
+  ('ver-gow-coo-bonus', 'game-gow-coo', 'Bonus Files', 'bonus', 'Source translation sheets and documentation.', '2026-03-01', 90),
+  ('ver-gow-gos-10', 'game-gow-gos', 'Version 1.0', '1.0', 'Complete Arabic localization pack.', '2025-11-18', 10),
+  ('ver-gta-12', 'game-gta-lcs', 'Version 1.2', '1.2', 'Updated HUD font and subtitle pass.', '2026-01-12', 10),
+  ('ver-sh-08', 'game-sh-origins', 'Version 0.8', '0.8', 'Preview dub stems and subtitle draft.', '2026-02-20', 10),
+  ('ver-re4-10', 'game-re4', 'Version 1.0', '1.0', 'Complete translation package.', '2025-08-04', 10),
+  ('ver-sotc-10', 'game-sotc', 'Version 1.0', '1.0', 'Complete translation package.', '2025-06-21', 10),
+  ('ver-p3p-13', 'game-p3p', 'Version 1.3', '1.3', 'Updated Arabic UI font.', '2026-02-02', 10)
+on conflict (id) do nothing;
+
+-- File records are intentionally not seeded. Real uploads are stored on persistent disk.

@@ -1,0 +1,17 @@
+const buckets = new Map<string, { count: number; reset: number }>();
+
+export function rateLimit(key: string, limit: number, windowMs: number): boolean {
+  const now = Date.now();
+  const current = buckets.get(key);
+  if (!current || current.reset < now) {
+    buckets.set(key, { count: 1, reset: now + windowMs });
+    return true;
+  }
+  if (current.count >= limit) return false;
+  current.count += 1;
+  return true;
+}
+
+export function clientKey(request: Request): string {
+  return request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "local";
+}

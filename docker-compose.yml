@@ -1,0 +1,21 @@
+services:
+  goated-lionking:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      NODE_ENV: production
+      NITRO_HOST: 0.0.0.0
+      NITRO_PORT: 8080
+      BETTER_AUTH_URL: ${BETTER_AUTH_URL}
+      BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET}
+      PGLITE_DIR: /data/db
+      STORAGE_DIR: /data/files
+    volumes:
+      - goated_db:/data/db
+      - goated_files:/data/files
+
+volumes:
+  goated_db:
+  goated_files:
