@@ -17,7 +17,7 @@ export const Route = createFileRoute("/owner-panel/settings")({
 function SettingsPage() {
   const [settings, setSettings] = useState<SiteSettings | null>(null);
   const [lookups, setLookups] = useState<Lookups | null>(null);
-  const [driver, setDriver] = useState<"local">("local");
+  const [driver, setDriver] = useState<"local" | "blob">("local");
   const [pending, setPending] = useState(false);
 
   async function reload() {

@@ -79,8 +79,10 @@ export async function handleUploadRequest(request: Request): Promise<Response> {
   }
 
   const storageKey = newStorageKey(kind, ext);
+  let storedKey = storageKey;
   try {
-    await saveUploadStream(storageKey, request.body, fileSize, maxBytes);
+    const storedObject = await saveUploadStream(storageKey, request.body, fileSize, maxBytes);
+    storedKey = typeof storedObject === "string" ? storedObject : storageKey;
   } catch (error) {
     await removeObject(storageKey).catch(() => undefined);
     const message = error instanceof Error ? error.message : "Upload failed.";
@@ -88,7 +90,7 @@ export async function handleUploadRequest(request: Request): Promise<Response> {
   }
 
   if (kind === "cover") {
-    return Response.json({ storageKey, size: fileSize, mimeType: mime, filename });
+    return Response.json({ storageKey: storedKey, size: fileSize, mimeType: mime, filename });
   }
 
   const gameId = String(metadata.gameId || "");
