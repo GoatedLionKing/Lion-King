@@ -72,6 +72,7 @@ export default defineConfig(({ command, isPreview }) => ({
     strictPort: true,
   },
   resolve: { tsconfigPaths: true },
+  assetsInclude: ["**/*.data"],
   plugins: [
     pgliteBootstrapPlugin(),
     tailwindcss(),
