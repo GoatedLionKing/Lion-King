@@ -5,7 +5,7 @@ import { deleteFile, getFileInfo, putStream } from "./fs";
 export type StorageDriver = "blob" | "local";
 
 export function storageDriver(): StorageDriver {
-  return env("BLOB_READ_WRITE_TOKEN") ? "blob" : "local";
+  return env("BLOB_READ_WRITE_TOKEN_STORE") ? "blob" : "local";
 }
 
 export function storageRoot(): string {
