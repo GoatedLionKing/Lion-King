@@ -5,7 +5,7 @@ import { deleteFile, getFileInfo, putStream } from "./fs";
 export type StorageDriver = "blob" | "local";
 
 export function storageDriver(): StorageDriver {
-  return env("BLOB_READ_WRITE_TOKEN_STORE") ? "blob" : "local";
+  return env("BLOB_READ_WRITE_TOKEN") ? "blob" : "local";
 }
 
 export function storageRoot(): string {
@@ -29,6 +29,7 @@ export async function saveUploadStream(
     const blob = await put(key, body, {
       access: "public",
       addRandomSuffix: false,
+      storeId: env("BLOB_READ_WRITE_TOKEN_STORE_ID"),
     });
 
     return blob.url;
