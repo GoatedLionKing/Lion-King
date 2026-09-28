@@ -1,0 +1,163 @@
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #080808;
+  color: #fff;
+  direction: rtl;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.site {
+  min-height: 100vh;
+}
+
+.hero {
+  min-height: 75vh;
+  padding: 28px 7%;
+  background:
+    radial-gradient(circle at 80% 30%, #5b1a1a 0, transparent 35%),
+    linear-gradient(135deg, #111 0%, #050505 70%);
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  direction: ltr;
+}
+
+.logo {
+  font-weight: 900;
+  letter-spacing: 2px;
+}
+
+nav a {
+  direction: rtl;
+  font-weight: bold;
+}
+
+.hero-content {
+  max-width: 700px;
+  margin-top: 120px;
+}
+
+.tag {
+  color: #d6a84f;
+  font-size: 13px;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+h1 {
+  font-size: clamp(48px, 9vw, 100px);
+  line-height: .95;
+  margin: 20px 0;
+}
+
+.hero-content > p:not(.tag) {
+  color: #bbb;
+  font-size: 18px;
+  line-height: 1.8;
+  max-width: 600px;
+}
+
+.button,
+.download {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 14px 24px;
+  background: #d6a84f;
+  color: #111;
+  font-weight: bold;
+  border-radius: 6px;
+}
+
+.section {
+  padding: 90px 7%;
+}
+
+h2 {
+  font-size: 48px;
+  margin-top: 10px;
+}
+
+.projects {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+}
+
+.card {
+  background: #121212;
+  border: 1px solid #262626;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.card-image {
+  height: 230px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 60px;
+  font-weight: 900;
+}
+
+.gta {
+  background: linear-gradient(135deg, #542020, #171717);
+}
+
+.gow {
+  background: linear-gradient(135deg, #303030, #111);
+}
+
+.card-content {
+  padding: 25px;
+}
+
+.card-content span {
+  color: #d6a84f;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.card-content h3 {
+  font-size: 28px;
+  margin: 12px 0;
+}
+
+.card-content p {
+  color: #aaa;
+  line-height: 1.7;
+}
+
+.download {
+  margin-top: 10px;
+}
+
+footer {
+  padding: 50px 7%;
+  border-top: 1px solid #222;
+  color: #777;
+  direction: ltr;
+}
+
+footer strong {
+  color: #fff;
+}
+
+footer p {
+  font-size: 13px;
+}
