@@ -2,6 +2,7 @@ import { createRootRoute, HeadContent, Outlet, Scripts } from "@tanstack/react-r
 import { Toaster } from "sonner";
 import { NotFoundPage } from "@/lib/error-component";
 import { AuthProvider } from "@/lib/auth/provider";
+import { SiteAudio } from "@/components/layout/site-audio";
 import { LanguageProvider } from "@/lib/i18n";
 import appCss from "../styles.css?url";
 
@@ -47,6 +48,7 @@ function RootComponent() {
         <LanguageProvider>
           <AuthProvider>
             <Outlet />
+            <SiteAudio />
             <Toaster theme="dark" position="bottom-right" richColors={false} />
           </AuthProvider>
         </LanguageProvider>
