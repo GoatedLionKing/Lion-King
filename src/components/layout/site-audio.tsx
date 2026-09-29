@@ -8,14 +8,17 @@ export function SiteAudio() {
   const [muted, setMuted] = useState(false);
 
   useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
     const saved = localStorage.getItem(STORAGE_KEY);
     const isMuted = saved === "true";
+
     setMuted(isMuted);
-
-    const audio = audioRef.current;
-    if (!audio || isMuted) return;
-
+    audio.muted = isMuted;
     audio.volume = 0.45;
+
+    if (isMuted) return;
 
     const startAudio = () => {
       void audio.play().catch(() => {});
@@ -24,6 +27,7 @@ export function SiteAudio() {
     startAudio();
 
     const events = ["pointerdown", "touchstart", "keydown"] as const;
+
     events.forEach((event) => {
       window.addEventListener(event, startAudio, { once: true });
     });
@@ -40,6 +44,7 @@ export function SiteAudio() {
     if (!audio) return;
 
     const nextMuted = !muted;
+
     audio.muted = nextMuted;
     setMuted(nextMuted);
     localStorage.setItem(STORAGE_KEY, String(nextMuted));
@@ -51,7 +56,12 @@ export function SiteAudio() {
 
   return (
     <>
-      <audio ref={audioRef} src="/audio/intro.mp3" loop preload="auto" muted={muted} />
+      <audio
+        ref={audioRef}
+        src="/audio/intro.mp3"
+        loop
+        preload="auto"
+      />
 
       <button
         type="button"
@@ -60,7 +70,11 @@ export function SiteAudio() {
         title={muted ? "تشغيل الصوت" : "كتم الصوت"}
         className="fixed bottom-4 right-4 z-50 flex size-9 items-center justify-center rounded-full border border-gold/25 bg-bg/75 text-gold shadow-lg backdrop-blur-md transition-all hover:border-gold/60 hover:bg-bg/95 focus:outline-none focus:ring-2 focus:ring-gold/40"
       >
-        {muted ? <VolumeX className="size-4" /> : <Volume2 className="size-4" />}
+        {muted ? (
+          <VolumeX className="size-4" />
+        ) : (
+          <Volume2 className="size-4" />
+        )}
       </button>
     </>
   );
