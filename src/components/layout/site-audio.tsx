@@ -20,22 +20,26 @@ export function SiteAudio() {
 
     if (isMuted) return;
 
-    const startAudio = () => {
+    const tryPlay = () => {
       void audio.play().catch(() => {});
     };
 
-    startAudio();
+    tryPlay();
 
-    const events = ["pointerdown", "touchstart", "keydown"] as const;
+    const startOnFirstInteraction = () => {
+      if (!audio.muted) {
+        void audio.play().catch(() => {});
+      }
+    };
 
-    events.forEach((event) => {
-      window.addEventListener(event, startAudio, { once: true });
-    });
+    window.addEventListener("pointerdown", startOnFirstInteraction, { once: true });
+    window.addEventListener("touchstart", startOnFirstInteraction, { once: true });
+    window.addEventListener("keydown", startOnFirstInteraction, { once: true });
 
     return () => {
-      events.forEach((event) => {
-        window.removeEventListener(event, startAudio);
-      });
+      window.removeEventListener("pointerdown", startOnFirstInteraction);
+      window.removeEventListener("touchstart", startOnFirstInteraction);
+      window.removeEventListener("keydown", startOnFirstInteraction);
     };
   }, []);
 
