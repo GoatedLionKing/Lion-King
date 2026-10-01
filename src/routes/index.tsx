@@ -390,7 +390,7 @@ function FeaturedCarousel({
             onClick={() => move(-1)}
             className="flex size-11 items-center justify-center rounded-full border border-border bg-surface text-fg transition-all hover:border-gold/60 hover:bg-surface-2 hover:text-gold active:scale-95"
           >
-            <ArrowLeft className="size-5" />
+            <ArrowRight className="size-5" />
           </button>
 
           <div className="flex items-center gap-1.5">
@@ -418,7 +418,7 @@ function FeaturedCarousel({
             onClick={() => move(1)}
             className="flex size-11 items-center justify-center rounded-full border border-border bg-surface text-fg transition-all hover:border-gold/60 hover:bg-surface-2 hover:text-gold active:scale-95"
           >
-            <ArrowRight className="size-5" />
+            <ArrowLeft className="size-5" />
           </button>
         </div>
 
