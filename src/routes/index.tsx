@@ -279,10 +279,6 @@ function FeaturedCarousel({
             const offset = getOffset(index);
             const isActive = offset === 0;
 
-            if (Math.abs(offset) > 2) {
-              return null;
-            }
-
             const dragProgress = isDragging ? dragX / 300 : 0;
             const visualOffset = offset + dragProgress;
             const distance = Math.abs(visualOffset);
