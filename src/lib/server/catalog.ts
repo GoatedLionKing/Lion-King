@@ -5,7 +5,7 @@ import { FEATURED_LIMIT, LATEST_LIMIT, PAGE_SIZE } from "@/lib/constants";
 import type { Game, GameDetail, GameFile, LatestRelease, Lookups, SiteSettings, Version } from "@/lib/types";
 
 const GAME_SELECT = `g.id, g.slug, g.title, g.description, g.cover, g.platform_id, g.project_type_id, g.status_id,
-  g.version, g.developer, g.original_release, g.localization_release, g.featured, g.published,
+  g.version, g.developer, g.original_release, g.localization_release, g.featured, g.published, g.youtube_video_url,
   g.is_demo, g.created_at, g.updated_at,
   p.name as platform_name, t.name as project_type_name, s.name as status_name`;
 

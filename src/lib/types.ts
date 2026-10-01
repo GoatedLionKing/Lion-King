@@ -26,6 +26,7 @@ export type Game = {
   title: string;
   description: string;
   cover: string | null;
+  youtube_video_url: string | null;
   platform_id: string;
   project_type_id: string;
   status_id: string;

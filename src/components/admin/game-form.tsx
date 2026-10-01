@@ -14,6 +14,7 @@ export type GameFormValue = {
   slug: string;
   description: string;
   cover: string | null;
+  youtube_video_url: string;
   platform_id: string;
   project_type_id: string;
   status_id: string;
@@ -31,6 +32,7 @@ export function gameToForm(game?: Game | null, lookups?: Lookups | null): GameFo
     slug: game?.slug ?? "",
     description: game?.description ?? "",
     cover: game?.cover ?? null,
+    youtube_video_url: game?.youtube_video_url ?? "",
     platform_id: game?.platform_id ?? lookups?.platforms[0]?.id ?? "psp",
     project_type_id: game?.project_type_id ?? lookups?.projectTypes[0]?.id ?? "arabic-localization",
     status_id: game?.status_id ?? lookups?.statuses[0]?.id ?? "in-progress",
@@ -110,6 +112,16 @@ export function GameForm({
       <label className="block space-y-1.5">
         <Label>{"الوصف"}</Label>
         <Textarea value={value.description} onChange={(e) => onChange({ ...value, description: e.target.value })} />
+      </label>
+      <label className="block space-y-1.5">
+        <Label>{"رابط فيديو YouTube"}</Label>
+        <Input
+          type="url"
+          value={value.youtube_video_url}
+          onChange={(e) => onChange({ ...value, youtube_video_url: e.target.value })}
+          placeholder="https://www.youtube.com/watch?v=..."
+          dir="ltr"
+        />
       </label>
       <div className="flex flex-col gap-3 sm:flex-row">
         <div className="h-36 w-24 overflow-hidden rounded-md border border-border bg-surface-2">

@@ -14,6 +14,7 @@ const gameInput = z.object({
   slug: z.string().max(120).optional(),
   description: z.string().max(8000).optional(),
   cover: z.string().max(500).optional().nullable(),
+  youtube_video_url: z.string().url().max(500).optional().nullable(),
   platform_id: z.string().min(1),
   project_type_id: z.string().min(1),
   status_id: z.string().min(1),
@@ -119,8 +120,8 @@ export const createGame = createServerFn({ method: "POST" })
     await sql.query(
       `insert into games (
         id, slug, title, description, cover, platform_id, project_type_id, status_id,
-        version, developer, original_release, localization_release, featured, published
-      ) values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14)`,
+        version, developer, original_release, localization_release, featured, published, youtube_video_url
+      ) values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15)`,
       [
         id,
         slug,
@@ -136,6 +137,7 @@ export const createGame = createServerFn({ method: "POST" })
         data.localization_release || null,
         data.featured ?? false,
         data.published ?? false,
+        data.youtube_video_url?.trim() || null,
       ],
     );
     return { id, slug };
@@ -153,7 +155,7 @@ export const updateGame = createServerFn({ method: "POST" })
         slug = $2, title = $3, description = $4, cover = $5, platform_id = $6,
         project_type_id = $7, status_id = $8, version = $9, developer = $10,
         original_release = $11, localization_release = $12, featured = $13,
-        published = $14, updated_at = now()
+        published = $14, youtube_video_url = $15, updated_at = now()
        where id = $1`,
       [
         data.id,
@@ -170,6 +172,7 @@ export const updateGame = createServerFn({ method: "POST" })
         data.localization_release || null,
         data.featured ?? false,
         data.published ?? false,
+        data.youtube_video_url?.trim() || null,
       ],
     );
     return { id: data.id, slug };
