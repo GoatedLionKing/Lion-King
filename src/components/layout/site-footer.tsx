@@ -53,6 +53,20 @@ export function SiteFooter() {
               Instagram
             </a>
           </div>
+
+          <div className="rounded-lg border border-border bg-surface-2 p-4">
+            <p className="text-xs tracking-wider text-muted">
+              تحميل التطبيق الرسمي:
+            </p>
+            <a
+              href="https://www.mediafire.com/file/stbpxjcbyrh1oec/Goated.apk/file"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-1 inline-block font-display text-base text-gold transition-colors hover:text-gold-2"
+            >
+              Goated
+            </a>
+          </div>
         </div>
       </div>
       <div className="border-t border-border py-4 text-center text-xs text-subtle">
