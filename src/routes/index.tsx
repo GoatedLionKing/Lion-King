@@ -269,7 +269,7 @@ function FeaturedCarousel({
     return (
       <div
         key={`${game.id}-${position}`}
-        className="flex h-[310px] w-1/3 shrink-0 items-start justify-center sm:h-[390px] md:h-[430px]"
+        className="flex h-[310px] w-[33.333333%] shrink-0 items-start justify-center sm:h-[390px] md:h-[430px]"
       >
         <Link
           to="/games/$slug"
@@ -322,7 +322,7 @@ function FeaturedCarousel({
       >
         <div className="absolute inset-x-0 top-0 h-full overflow-hidden">
           <div
-            className="flex h-full w-[300%]"
+            className="flex h-full w-[300%] min-w-0"
             style={{
               transform: `translate3d(calc(-33.3333% + ${isDragging ? dragX / 3 : 0}px), 0, 0)`,
               transition: isDragging
