@@ -173,42 +173,41 @@ function FeaturedCarousel({
   games: Awaited<ReturnType<typeof getFeaturedGames>>;
 }) {
   const [active, setActive] = useState(0);
-  const [direction, setDirection] = useState<1 | -1>(1);
   const [dragStart, setDragStart] = useState<number | null>(null);
   const [dragX, setDragX] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
   const didDrag = useRef(false);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const count = games.length;
 
   useEffect(() => {
     setActive((current) => (count === 0 ? 0 : current % count));
+
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
   }, [count]);
 
-  if (count === 0) {
-    return null;
-  }
+  if (count === 0) return null;
+
+  const indexOf = (index: number) => (index + count) % count;
 
   const move = (step: 1 | -1) => {
-    setDirection(step);
-    setActive((current) => (current + step + count) % count);
-  };
+    if (isAnimating || count < 2) return;
 
-  const getOffset = (index: number) => {
-    let offset = index - active;
+    setIsAnimating(true);
 
-    if (offset > count / 2) {
-      offset -= count;
-    }
-
-    if (offset < -count / 2) {
-      offset += count;
-    }
-
-    return offset;
+    timerRef.current = setTimeout(() => {
+      setActive((current) => indexOf(current + step));
+      setIsAnimating(false);
+    }, 1000);
   };
 
   const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (isAnimating) return;
+
     setDragStart(event.clientX);
     setDragX(0);
     setIsDragging(true);
@@ -217,15 +216,11 @@ function FeaturedCarousel({
   };
 
   const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
-    if (dragStart === null) {
-      return;
-    }
+    if (dragStart === null || isAnimating) return;
 
     const distance = event.clientX - dragStart;
 
-    if (Math.abs(distance) > 4) {
-      didDrag.current = true;
-    }
+    if (Math.abs(distance) > 4) didDrag.current = true;
 
     setDragX(distance);
   };
@@ -240,14 +235,10 @@ function FeaturedCarousel({
 
     setDragStart(null);
     setIsDragging(false);
+    setDragX(0);
 
     if (Math.abs(distance) >= 60) {
-      requestAnimationFrame(() => {
-        move(distance < 0 ? 1 : -1);
-        setDragX(0);
-      });
-    } else {
-      setDragX(0);
+      move(distance < 0 ? 1 : -1);
     }
 
     if (event.currentTarget.hasPointerCapture(event.pointerId)) {
@@ -265,6 +256,61 @@ function FeaturedCarousel({
     }
   };
 
+  const previous = games[indexOf(active - 1)];
+  const current = games[active];
+  const next = games[indexOf(active + 1)];
+
+  const renderCard = (
+    game: typeof current,
+    position: -1 | 0 | 1,
+  ) => {
+    const isActive = position === 0;
+
+    return (
+      <div
+        key={`${game.id}-${position}`}
+        className="flex h-[310px] w-1/3 shrink-0 items-start justify-center sm:h-[390px] md:h-[430px]"
+      >
+        <Link
+          to="/games/$slug"
+          params={{ slug: game.slug }}
+          aria-label={game.title}
+          className="block h-full w-[207px] sm:w-[260px] md:w-[287px]"
+          onClick={(event) => {
+            if (didDrag.current || isAnimating) {
+              event.preventDefault();
+              didDrag.current = false;
+              return;
+            }
+
+            if (!isActive) {
+              event.preventDefault();
+              move(position > 0 ? 1 : -1);
+            }
+          }}
+        >
+          <div
+            className={`relative h-full w-full overflow-hidden rounded-xl border bg-surface-2 shadow-2xl transition-[transform,opacity,border-color] duration-1000 ${
+              isActive
+                ? "scale-100 border-gold/70 opacity-100 shadow-gold"
+                : "scale-[0.78] border-border/60 opacity-55"
+            }`}
+          >
+            <img
+              src={coverSrc(game.cover)}
+              alt={game.title}
+              className="size-full object-cover"
+              loading={isActive ? "eager" : "lazy"}
+              draggable={false}
+            />
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/4 bg-gradient-to-t from-black/75 to-transparent" />
+            <div className="pointer-events-none absolute -bottom-4 left-1/2 h-8 w-[75%] -translate-x-1/2 rounded-full bg-black/60 blur-xl" />
+          </div>
+        </Link>
+      </div>
+    );
+  };
+
   return (
     <div className="relative">
       <div
@@ -275,104 +321,30 @@ function FeaturedCarousel({
         onPointerCancel={handlePointerCancel}
       >
         <div className="absolute inset-x-0 top-0 h-full overflow-hidden">
-          {games.map((game, index) => {
-            const offset = getOffset(index);
-            const isActive = offset === 0;
-
-            const dragProgress = isDragging ? dragX / 300 : 0;
-            const visualOffset = offset + dragProgress;
-            const distance = Math.abs(visualOffset);
-
-            const x =
-              visualOffset <= -1
-                ? `${-54 + Math.max(-1, visualOffset + 1) * 34}%`
-                : visualOffset < 0
-                  ? `${visualOffset * 54}%`
-                  : visualOffset < 1
-                    ? `${visualOffset * 54}%`
-                    : `${54 + Math.min(1, visualOffset - 1) * 34}%`;
-
-            const scale =
-              distance < 1
-                ? 1 - distance * 0.22
-                : 0.78 - Math.min(1, distance - 1) * 0.16;
-
-            const opacity =
-              distance < 1
-                ? 1 - distance * 0.45
-                : 0.55 - Math.min(1, distance - 1) * 0.27;
-
-            const zIndex = 20 - Math.round(distance);
-
-            return (
-              <div
-                key={game.id}
-                className="absolute left-1/2 top-0 h-[310px] w-[207px] sm:h-[390px] sm:w-[260px] md:h-[430px] md:w-[287px]"
-                style={{
-                  transform: `translate3d(calc(-50% + ${x}), 0, 0) scale(${scale})`,
-                  opacity,
-                  zIndex,
-                  willChange: "transform, opacity",
-                  backfaceVisibility: "hidden",
-                  WebkitBackfaceVisibility: "hidden",
-                  transition: isDragging
-                    ? "none"
-                    : "transform 1000ms cubic-bezier(0.22, 1, 0.36, 1), opacity 800ms ease",
-                }}
-              >
-                <Link
-                  to="/games/$slug"
-                  params={{ slug: game.slug }}
-                  aria-label={game.title}
-                  className={`group block h-full w-full ${
-                    isActive ? "cursor-pointer" : "cursor-pointer"
-                  }`}
-                  onClick={(event) => {
-                    if (didDrag.current) {
-                      event.preventDefault();
-                      didDrag.current = false;
-                      return;
-                    }
-
-                    if (!isActive) {
-                      event.preventDefault();
-                      move(offset > 0 ? 1 : -1);
-                    }
-                  }}
-                >
-                  <div
-                    className={`relative h-full w-full overflow-hidden rounded-xl border bg-surface-2 shadow-2xl ${
-                      isActive
-                        ? "border-gold/70 shadow-gold"
-                        : "border-border/60"
-                    }`}
-                  >
-                    <img
-                      src={coverSrc(game.cover)}
-                      alt={game.title}
-                      className="size-full object-cover transition-transform duration-500 group-hover:scale-[1.025]"
-                      loading={index === active ? "eager" : "lazy"}
-                      draggable={false}
-                    />
-
-                    <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/4 bg-gradient-to-t from-black/75 to-transparent" />
-
-                    <div className="pointer-events-none absolute -bottom-4 left-1/2 h-8 w-[75%] -translate-x-1/2 rounded-full bg-black/60 blur-xl" />
-                  </div>
-                </Link>
-              </div>
-            );
-          })}
+          <div
+            className="flex h-full w-[300%]"
+            style={{
+              transform: `translate3d(calc(-33.3333% + ${isDragging ? dragX / 3 : 0}px), 0, 0)`,
+              transition: isDragging
+                ? "none"
+                : "transform 1000ms cubic-bezier(0.22, 1, 0.36, 1)",
+              willChange: "transform",
+            }}
+          >
+            {renderCard(previous, -1)}
+            {renderCard(current, 0)}
+            {renderCard(next, 1)}
+          </div>
         </div>
       </div>
 
       <div className="mt-2 flex flex-col items-center">
         <Link
           to="/games/$slug"
-          params={{ slug: games[active].slug }}
+          params={{ slug: current.slug }}
           className="max-w-[90%] truncate text-center font-display text-xl text-fg transition-colors hover:text-gold-2"
         >
-          {games[active].title}
+          {current.title}
         </Link>
 
         <div className="mt-1 text-sm text-muted">
@@ -384,7 +356,8 @@ function FeaturedCarousel({
             type="button"
             aria-label="اللعبة المميزة السابقة"
             onClick={() => move(-1)}
-            className="flex size-11 items-center justify-center rounded-full border border-border bg-surface text-fg transition-all hover:border-gold/60 hover:bg-surface-2 hover:text-gold active:scale-95"
+            disabled={isAnimating}
+            className="flex size-11 items-center justify-center rounded-full border border-border bg-surface text-fg transition-all hover:border-gold/60 hover:bg-surface-2 hover:text-gold active:scale-95 disabled:opacity-50"
           >
             <ArrowRight className="size-5" />
           </button>
@@ -394,10 +367,12 @@ function FeaturedCarousel({
               <button
                 key={game.id}
                 type="button"
-                aria-label={`Go to ${game.title}`}
+                aria-label={`انتقل إلى ${game.title}`}
+                disabled={isAnimating}
                 onClick={() => {
-                  setDirection(index > active ? 1 : -1);
-                  setActive(index);
+                  if (index !== active && !isAnimating) {
+                    move(index > active ? 1 : -1);
+                  }
                 }}
                 className={`h-1.5 rounded-full transition-all duration-300 ${
                   index === active
@@ -412,14 +387,15 @@ function FeaturedCarousel({
             type="button"
             aria-label="اللعبة المميزة التالية"
             onClick={() => move(1)}
-            className="flex size-11 items-center justify-center rounded-full border border-border bg-surface text-fg transition-all hover:border-gold/60 hover:bg-surface-2 hover:text-gold active:scale-95"
+            disabled={isAnimating}
+            className="flex size-11 items-center justify-center rounded-full border border-border bg-surface text-fg transition-all hover:border-gold/60 hover:bg-surface-2 hover:text-gold active:scale-95 disabled:opacity-50"
           >
             <ArrowLeft className="size-5" />
           </button>
         </div>
 
         <div className="mt-3 text-[10px] uppercase tracking-[0.25em] text-subtle">
-          Featured
+          المميزة
         </div>
       </div>
     </div>
