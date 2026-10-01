@@ -4,7 +4,6 @@ import { formatBytes, formatDate } from "@/lib/format";
 import { getAdminStats } from "@/lib/server/admin";
 import type { AdminStats } from "@/lib/types";
 
-import { tx } from "@/lib/i18n";
 export const Route = createFileRoute("/admin/")({
   component: AdminHome,
 });
@@ -16,7 +15,7 @@ function AdminHome() {
   useEffect(() => {
     getAdminStats()
       .then(setStats)
-      .catch((err: unknown) => setError(err instanceof Error ? err.message : "Failed to load"));
+      .catch((err: unknown) => setError(err instanceof Error ? err.message : "فشل التحميل"));
   }, []);
 
   if (error) {
@@ -27,18 +26,18 @@ function AdminHome() {
   }
 
   const cards = [
-    { label: "Total games", value: stats.totalGames },
-    { label: "Published games", value: stats.publishedGames },
-    { label: "Total files", value: stats.totalFiles },
-    { label: "Hidden files", value: stats.hiddenFiles },
-    { label: "Total downloads", value: stats.totalDownloads },
-    { label: "Total storage", value: formatBytes(stats.totalStorage) },
+    { label: "إجمالي الألعاب", value: stats.totalGames },
+    { label: "الألعاب المنشورة", value: stats.publishedGames },
+    { label: "إجمالي الملفات", value: stats.totalFiles },
+    { label: "الملفات المخفية", value: stats.hiddenFiles },
+    { label: "إجمالي التنزيلات", value: stats.totalDownloads },
+    { label: "إجمالي التخزين", value: formatBytes(stats.totalStorage) },
   ];
 
   return (
     <div>
-      <p className="text-xs tracking-[0.28em] text-gold uppercase">{tx("Dashboard")}</p>
-      <h1 className="mt-2 font-display text-3xl text-fg">{tx("Overview")}</h1>
+      <p className="text-xs tracking-[0.28em] text-gold uppercase">{"لوحة التحكم"}</p>
+      <h1 className="mt-2 font-display text-3xl text-fg">{"نظرة عامة"}</h1>
       <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {cards.map((card) => (
           <div key={card.label} className="rounded-xl border border-border bg-surface px-5 py-4">
@@ -49,11 +48,11 @@ function AdminHome() {
       </div>
       <div className="mt-10 grid gap-4 lg:grid-cols-2">
         <div className="rounded-xl border border-border bg-surface p-5">
-          <h2 className="font-display text-lg text-fg">{tx("Latest game")}</h2>
+          <h2 className="font-display text-lg text-fg">{"أحدث لعبة"}</h2>
           {stats.latestGame ? (
             <div className="mt-3">
               <p className="text-fg">{stats.latestGame.title}</p>
-              <p className="text-sm text-muted">{tx("Added")} {formatDate(stats.latestGame.created_at)}</p>
+              <p className="text-sm text-muted">{"أضيف في"} {formatDate(stats.latestGame.created_at)}</p>
               <Link
                 to="/admin/games/$id"
                 params={{ id: stats.latestGame.id }}
@@ -63,11 +62,11 @@ function AdminHome() {
               </Link>
             </div>
           ) : (
-            <p className="mt-3 text-sm text-muted">{tx("No games yet.")}</p>
+            <p className="mt-3 text-sm text-muted">{"لا توجد ألعاب بعد."}</p>
           )}
         </div>
         <div className="rounded-xl border border-border bg-surface p-5">
-          <h2 className="font-display text-lg text-fg">{tx("Latest uploaded file")}</h2>
+          <h2 className="font-display text-lg text-fg">{"أحدث ملف مرفوع"}</h2>
           {stats.latestFile ? (
             <div className="mt-3">
               <p className="text-fg">{stats.latestFile.name}</p>
@@ -76,7 +75,7 @@ function AdminHome() {
               </p>
             </div>
           ) : (
-            <p className="mt-3 text-sm text-muted">{tx("No files yet.")}</p>
+            <p className="mt-3 text-sm text-muted">{"لا توجد ملفات بعد."}</p>
           )}
         </div>
       </div>

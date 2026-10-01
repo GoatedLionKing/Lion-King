@@ -1,7 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { LionMark } from "@/components/brand/lion-mark";
 
-import { tx } from "@/lib/i18n";
 export function SiteFooter() {
   return (
     <footer className="mt-auto border-t border-border bg-surface">
@@ -10,7 +9,7 @@ export function SiteFooter() {
           <LionMark className="size-8" />
           <div>
             <p className="font-display text-sm tracking-[0.18em] text-gold uppercase">Goated LionKing</p>
-            <p className="text-xs text-muted">{tx("Arabic Game Localization & Modding")}</p>
+            <p className="text-xs text-muted">{"تعريب الألعاب والتعديل عليها"}</p>
           </div>
         </div>
         <nav className="flex flex-wrap gap-x-5 gap-y-2 text-sm text-muted">

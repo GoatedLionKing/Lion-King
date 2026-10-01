@@ -8,7 +8,6 @@ import { deleteGame, listAdminGames, setGameFlag } from "@/lib/server/admin";
 import { getLookups } from "@/lib/server/catalog";
 import type { Game, Lookups } from "@/lib/types";
 
-import { tx } from "@/lib/i18n";
 export const Route = createFileRoute("/owner-panel/games/")({
   validateSearch: parseCatalogSearch,
   component: AdminGamesPage,
@@ -44,7 +43,7 @@ function AdminGamesPage() {
       setPage(result.page);
       setPageSize(result.pageSize);
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Failed to load games");
+      toast.error(err instanceof Error ? err.message : "فشل تحميل الألعاب");
     } finally {
       setLoading(false);
     }
@@ -59,11 +58,11 @@ function AdminGamesPage() {
     <div>
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="text-xs tracking-[0.28em] text-gold uppercase">{tx("Library")}</p>
-          <h1 className="mt-2 font-display text-3xl text-fg">{tx("Games")}</h1>
+          <p className="text-xs tracking-[0.28em] text-gold uppercase">{"المكتبة"}</p>
+          <h1 className="mt-2 font-display text-3xl text-fg">{"الألعاب"}</h1>
         </div>
         <Button asChild>
-          <Link to="/owner-panel/games/new">{tx("Add game")}</Link>
+          <Link to="/owner-panel/games/new">{"إضافة لعبة"}</Link>
         </Button>
       </div>
       <div className="mt-6">
@@ -73,11 +72,11 @@ function AdminGamesPage() {
         <table className="w-full min-w-[44rem] text-left text-sm">
           <thead className="border-b border-border text-xs tracking-wide text-subtle uppercase">
             <tr>
-              <th className="px-4 py-3 font-medium">{tx("Title")}</th>
-              <th className="px-4 py-3 font-medium">{tx("Platform")}</th>
-              <th className="px-4 py-3 font-medium">{tx("Status")}</th>
-              <th className="px-4 py-3 font-medium">{tx("Flags")}</th>
-              <th className="px-4 py-3 font-medium">{tx("Actions")}</th>
+              <th className="px-4 py-3 font-medium">{"العنوان"}</th>
+              <th className="px-4 py-3 font-medium">{"المنصة"}</th>
+              <th className="px-4 py-3 font-medium">{"الحالة"}</th>
+              <th className="px-4 py-3 font-medium">{"العلامات"}</th>
+              <th className="px-4 py-3 font-medium">{"الإجراءات"}</th>
             </tr>
           </thead>
           <tbody>
@@ -100,14 +99,14 @@ function AdminGamesPage() {
                     <Link to="/owner-panel/games/$id" params={{ id: game.id }} className="font-medium text-fg hover:text-gold">
                       {game.title}
                     </Link>
-                    {game.is_demo ? <span className="ml-2 text-[11px] text-subtle">{tx("Sample")}</span> : null}
+                    {game.is_demo ? <span className="ml-2 text-[11px] text-subtle">{"عينة"}</span> : null}
                   </td>
                   <td className="px-4 py-3 text-muted">{game.platform_name}</td>
                   <td className="px-4 py-3">
                     <StatusBadge statusId={game.status_id} label={game.status_name ?? game.status_id} />
                   </td>
                   <td className="px-4 py-3 text-xs text-muted">
-                    {game.published ? "Published" : "Hidden"}
+                    {game.published ? "منشور" : "مخفي"}
                     {game.featured ? " · Featured" : ""}
                   </td>
                   <td className="px-4 py-3">
@@ -120,7 +119,7 @@ function AdminGamesPage() {
                           void load();
                         }}
                       >
-                        {game.published ? "Unpublish" : "Publish"}
+                        {game.published ? "إلغاء النشر" : "نشر"}
                       </button>
                       <button
                         type="button"
@@ -130,7 +129,7 @@ function AdminGamesPage() {
                           void load();
                         }}
                       >
-                        {game.featured ? "Unfeature" : "Feature"}
+                        {game.featured ? "إلغاء التمييز" : "تمييز"}
                       </button>
                       <button
                         type="button"
@@ -138,7 +137,7 @@ function AdminGamesPage() {
                         onClick={async () => {
                           if (!confirm(`Delete “${game.title}”? This cannot be undone.`)) return;
                           await deleteGame({ data: { id: game.id } });
-                          toast.success("Game deleted");
+                          toast.success("تم حذف اللعبة");
                           void load();
                         }}
                       >

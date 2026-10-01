@@ -22,7 +22,6 @@ import {
   updateGame,
   updateVersion,
 } from "@/lib/server/admin";
-import { tx } from "@/lib/i18n";
 import { getLookups } from "@/lib/server/catalog";
 import type { Game, GameFile, Lookups, Version } from "@/lib/types";
 
@@ -46,7 +45,7 @@ function AdminGamePage() {
   const reload = useCallback(async () => {
     const data = await getAdminGame({ data: { id } });
     if (!data) {
-      toast.error("Game not found");
+      toast.error("اللعبة غير موجودة");
       await navigate({ to: "/admin/games" });
       return;
     }
@@ -70,7 +69,7 @@ function AdminGamePage() {
     <div className="space-y-10">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="text-xs tracking-[0.28em] text-gold uppercase">{tx("Library")}</p>
+          <p className="text-xs tracking-[0.28em] text-gold uppercase">{"المكتبة"}</p>
           <h1 className="mt-2 font-display text-3xl text-fg">{game.title}</h1>
           <p className="mt-1 text-sm text-muted">/{game.slug}</p>
         </div>
@@ -87,7 +86,7 @@ function AdminGamePage() {
             onClick={async () => {
               if (!confirm(`Delete “${game.title}” and all of its files?`)) return;
               await deleteGame({ data: { id: game.id } });
-              toast.success("Game deleted");
+              toast.success("تم حذف اللعبة");
               await navigate({ to: "/admin/games" });
             }}
           >
@@ -97,14 +96,14 @@ function AdminGamePage() {
       </div>
 
       <section className="max-w-2xl rounded-xl border border-border bg-surface p-5">
-        <h2 className="font-display text-xl text-fg">{tx("Game information")}</h2>
+        <h2 className="font-display text-xl text-fg">{"معلومات اللعبة"}</h2>
         <div className="mt-5">
           <GameForm
             lookups={lookups}
             value={form}
             onChange={setForm}
             pending={pending}
-            submitLabel={tx("Save game")}
+            submitLabel={"حفظ اللعبة"}
             onSubmit={async () => {
               setPending(true);
               try {
@@ -118,10 +117,10 @@ function AdminGamePage() {
                     localization_release: form.localization_release || null,
                   },
                 });
-                toast.success(tx("Saved"));
+                toast.success("تم الحفظ");
                 await reload();
               } catch (err) {
-                toast.error(err instanceof Error ? err.message : tx("Save failed"));
+                toast.error(err instanceof Error ? err.message : "فشل الحفظ");
               } finally {
                 setPending(false);
               }
@@ -132,7 +131,7 @@ function AdminGamePage() {
 
       <section>
         <div className="mb-4 flex items-center justify-between">
-          <h2 className="font-display text-xl text-fg">{tx("Versions")}</h2>
+          <h2 className="font-display text-xl text-fg">{"الإصدارات"}</h2>
           <Button
             type="button"
             variant="secondary"
@@ -178,7 +177,7 @@ function AdminGamePage() {
                     onClick={async () => {
                       if (!confirm(`Delete version “${version.name}” and its files?`)) return;
                       await deleteVersion({ data: { id: version.id } });
-                      toast.success("Version deleted");
+                      toast.success("تم حذف الإصدار");
                       await reload();
                     }}
                   >
@@ -196,18 +195,18 @@ function AdminGamePage() {
       ) : null}
 
       <section>
-        <h2 className="mb-4 font-display text-xl text-fg">{tx("Files")}</h2>
+        <h2 className="mb-4 font-display text-xl text-fg">{"الملفات"}</h2>
         <div className="overflow-x-auto rounded-xl border border-border bg-surface">
           <table className="w-full min-w-[52rem] text-left text-sm">
             <thead className="border-b border-border text-xs tracking-wide text-subtle uppercase">
               <tr>
-                <th className="px-4 py-3 font-medium">{tx("File name")}</th>
-                <th className="px-4 py-3 font-medium">{tx("Version")}</th>
-                <th className="px-4 py-3 font-medium">{tx("Size")}</th>
-                <th className="px-4 py-3 font-medium">{tx("Downloads")}</th>
-                <th className="px-4 py-3 font-medium">{tx("Status")}</th>
-                <th className="px-4 py-3 font-medium">{tx("Upload date")}</th>
-                <th className="px-4 py-3 font-medium">{tx("Actions")}</th>
+                <th className="px-4 py-3 font-medium">{"اسم الملف"}</th>
+                <th className="px-4 py-3 font-medium">{"الإصدار"}</th>
+                <th className="px-4 py-3 font-medium">{"الحجم"}</th>
+                <th className="px-4 py-3 font-medium">{"التنزيلات"}</th>
+                <th className="px-4 py-3 font-medium">{"الحالة"}</th>
+                <th className="px-4 py-3 font-medium">{"تاريخ الرفع"}</th>
+                <th className="px-4 py-3 font-medium">{"الإجراءات"}</th>
               </tr>
             </thead>
             <tbody>
@@ -224,7 +223,7 @@ function AdminGamePage() {
                     <td className="px-4 py-3 text-muted">{file.version_name}</td>
                     <td className="px-4 py-3 tabular-nums text-muted">{formatBytes(file.file_size)}</td>
                     <td className="px-4 py-3 tabular-nums text-muted">{file.download_count}</td>
-                    <td className="px-4 py-3 text-muted">{file.visible ? "Visible" : "Hidden"}</td>
+                    <td className="px-4 py-3 text-muted">{file.visible ? "ظاهر" : "مخفي"}</td>
                     <td className="px-4 py-3 text-muted">{formatDate(file.created_at)}</td>
                     <td className="px-4 py-3">
                       <div className="flex flex-wrap gap-1">
@@ -247,7 +246,7 @@ function AdminGamePage() {
                           onClick={async () => {
                             if (!confirm(`Delete “${file.name}”?`)) return;
                             await deleteFile({ data: { id: file.id } });
-                            toast.success("File deleted");
+                            toast.success("تم حذف الملف");
                             await reload();
                           }}
                         >
@@ -264,17 +263,17 @@ function AdminGamePage() {
       </section>
 
       <Dialog open={versionOpen} onOpenChange={setVersionOpen}>
-        <DialogContent title={editingVersion ? tx("Edit version") : tx("Add version")}>
+        <DialogContent title={editingVersion ? "تعديل الإصدار" : "إضافة إصدار"}>
           <VersionForm
             initial={editingVersion}
             onCancel={() => setVersionOpen(false)}
             onSave={async (payload) => {
               if (editingVersion) {
                 await updateVersion({ data: { id: editingVersion.id, ...payload } });
-                toast.success("Version updated");
+                toast.success("تم تحديث الإصدار");
               } else {
                 await createVersion({ data: { game_id: game.id, ...payload } });
-                toast.success("Version created");
+                toast.success("تم إنشاء الإصدار");
               }
               setVersionOpen(false);
               await reload();
@@ -284,7 +283,7 @@ function AdminGamePage() {
       </Dialog>
 
       <Dialog open={Boolean(editingFile)} onOpenChange={(open) => !open && setEditingFile(null)}>
-        <DialogContent title={tx("Edit file")}>
+        <DialogContent title={"تعديل الملف"}>
           {editingFile ? (
             <FileMetaForm
               file={editingFile}
@@ -292,7 +291,7 @@ function AdminGamePage() {
               onCancel={() => setEditingFile(null)}
               onSave={async (payload) => {
                 await updateFileMeta({ data: { id: editingFile.id, ...payload } });
-                toast.success("File updated");
+                toast.success("تم تحديث الملف");
                 setEditingFile(null);
                 await reload();
               }}
@@ -331,26 +330,26 @@ function VersionForm({
       }}
     >
       <label className="block space-y-1.5">
-        <Label>{tx("Name")}</Label>
+        <Label>{"الاسم"}</Label>
         <Input required value={name} onChange={(e) => setName(e.target.value)} placeholder="Version 1.0" />
       </label>
       <label className="block space-y-1.5">
-        <Label>{tx("Version number")}</Label>
+        <Label>{"رقم الإصدار"}</Label>
         <Input required value={versionNumber} onChange={(e) => setVersionNumber(e.target.value)} placeholder="1.0" />
       </label>
       <label className="block space-y-1.5">
-        <Label>{tx("Description")}</Label>
+        <Label>{"الوصف"}</Label>
         <Textarea value={description} onChange={(e) => setDescription(e.target.value)} className="min-h-20" />
       </label>
       <label className="block space-y-1.5">
-        <Label>{tx("Release date")}</Label>
+        <Label>{"تاريخ الإصدار"}</Label>
         <Input type="date" value={releaseDate} onChange={(e) => setReleaseDate(e.target.value)} />
       </label>
       <div className="flex justify-end gap-2 pt-2">
         <Button type="button" variant="ghost" onClick={onCancel}>
           Cancel
         </Button>
-        <Button type="submit">{tx("Save")}</Button>
+        <Button type="submit">{"حفظ"}</Button>
       </div>
     </form>
   );
@@ -381,11 +380,11 @@ function FileMetaForm({
       }}
     >
       <label className="block space-y-1.5">
-        <Label>{tx("Name")}</Label>
+        <Label>{"الاسم"}</Label>
         <Input required value={name} onChange={(e) => setName(e.target.value)} />
       </label>
       <label className="block space-y-1.5">
-        <Label>{tx("Description")}</Label>
+        <Label>{"الوصف"}</Label>
         <Textarea value={description} onChange={(e) => setDescription(e.target.value)} className="min-h-20" />
       </label>
       <label className="block space-y-1.5">
@@ -393,7 +392,7 @@ function FileMetaForm({
         <Input required type="url" value={externalUrl} onChange={(e) => setExternalUrl(e.target.value)} dir="ltr" />
       </label>
       <label className="block space-y-1.5">
-        <Label>{tx("Version")}</Label>
+        <Label>{"الإصدار"}</Label>
         <select
           className="h-11 w-full rounded-md border border-border bg-surface px-3 text-sm text-fg"
           value={versionId}
@@ -414,7 +413,7 @@ function FileMetaForm({
         <Button type="button" variant="ghost" onClick={onCancel}>
           Cancel
         </Button>
-        <Button type="submit">{tx("Save")}</Button>
+        <Button type="submit">{"حفظ"}</Button>
       </div>
     </form>
   );

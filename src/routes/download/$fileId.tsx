@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { coverSrc, formatBytes } from "@/lib/format";
 import { getFileForDownload } from "@/lib/server/catalog";
 
-import { tx } from "@/lib/i18n";
 export const Route = createFileRoute("/download/$fileId")({
   loader: async ({ params }) => {
     const file = await getFileForDownload({ data: { fileId: params.fileId } });
@@ -38,7 +37,7 @@ function DownloadPage() {
     <PublicShell>
       <main className="mx-auto flex min-h-[60vh] w-full max-w-lg flex-col items-center justify-center px-4 py-16 text-center">
         <img src={coverSrc(file.game_cover)} alt="" className="mb-6 h-40 w-28 rounded-lg object-cover" />
-        <p className="text-xs tracking-[0.28em] text-gold uppercase">{tx("Download")}</p>
+        <p className="text-xs tracking-[0.28em] text-gold uppercase">{"تنزيل"}</p>
         <h1 className="mt-3 font-display text-3xl text-fg">{file.game_title}</h1>
         <p className="mt-2 text-muted">{file.name}</p>
         <p className="mt-1 text-sm text-subtle">

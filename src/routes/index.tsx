@@ -7,7 +7,6 @@ import { PublicShell } from "@/components/layout/public-shell";
 import { Button } from "@/components/ui/button";
 import { coverSrc, formatDate } from "@/lib/format";
 import { getFeaturedGames, getLatestReleases, getSiteSettings } from "@/lib/server/catalog";
-import { tx } from "@/lib/i18n";
 
 export const Route = createFileRoute("/")({
   loader: async () => {
@@ -51,11 +50,11 @@ function Home() {
 
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <Button asChild>
-              <Link to="/games">{tx("Browse Games")}</Link>
+              <Link to="/games">{"تصفح الألعاب"}</Link>
             </Button>
 
             <Button asChild variant="secondary">
-              <Link to="/latest">{tx("Latest Releases")}</Link>
+              <Link to="/latest">{"أحدث الإصدارات"}</Link>
             </Button>
           </div>
         </div>
@@ -66,7 +65,7 @@ function Home() {
           <div className="mb-8 flex items-end justify-between gap-4">
             <div>
               <p className="text-xs tracking-[0.28em] text-gold uppercase">
-                {tx("Archive")}
+                {"الأرشيف"}
               </p>
 
               <h2 className="mt-2 font-display text-3xl text-fg">
@@ -85,8 +84,8 @@ function Home() {
 
           {featured.length === 0 ? (
             <EmptyState
-              title="No games available yet."
-              body="Published featured projects will appear here."
+              title={"لا توجد ألعاب متاحة حاليًا."}
+              body={"ستظهر هنا المشاريع المنشورة والمميزة."}
             />
           ) : (
             <FeaturedCarousel games={featured} />
@@ -99,7 +98,7 @@ function Home() {
           <div className="mb-8 flex items-end justify-between gap-4">
             <div>
               <p className="text-xs tracking-[0.28em] text-gold uppercase">
-                {tx("Just in")}
+                {"أحدث الإضافات"}
               </p>
 
               <h2 className="mt-2 font-display text-3xl text-fg">
@@ -118,8 +117,8 @@ function Home() {
 
           {latest.length === 0 ? (
             <EmptyState
-              title="No releases yet."
-              body="New files will show up here as soon as they are published."
+              title={"لا توجد إصدارات بعد."}
+              body={"ستظهر الملفات الجديدة هنا فور نشرها."}
             />
           ) : (
             <ul className="divide-y divide-border overflow-hidden rounded-xl border border-border bg-bg">

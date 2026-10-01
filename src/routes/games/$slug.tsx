@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import { coverSrc, formatBytes, formatDate } from "@/lib/format";
 import { getGameBySlug } from "@/lib/server/catalog";
 
-import { tx } from "@/lib/i18n";
 export const Route = createFileRoute("/games/$slug")({
   loader: async ({ params }) => {
     const detail = await getGameBySlug({ data: { slug: params.slug } });
@@ -16,7 +15,7 @@ export const Route = createFileRoute("/games/$slug")({
   },
   head: ({ loaderData }) => {
     const game = loaderData?.game;
-    if (!game) return { meta: [{ title: "Game — GOATED LIONKING" }] };
+    if (!game) return { meta: [{ title: "اللعبة — GOATED LIONKING" }] };
     const title = `${game.title} — Arabic Localization | Goated LionKing`;
     const description = `Arabic localization files and related downloads for ${game.title}.`;
     return {
@@ -48,9 +47,9 @@ function GameDetailPage() {
           </div>
           <div>
             <div className="flex flex-wrap gap-2">
-              <span className="text-xs tracking-[0.22em] text-gold uppercase">{tx(game.platform_name ?? "")}</span>
+              <span className="text-xs tracking-[0.22em] text-gold uppercase">{game.platform_name ?? ""}</span>
               <span className="text-subtle">·</span>
-              <span className="text-xs tracking-wide text-muted uppercase">{tx(game.project_type_name ?? "")}</span>
+              <span className="text-xs tracking-wide text-muted uppercase">{game.project_type_name ?? ""}</span>
             </div>
             <h1 className="mt-3 font-display text-4xl leading-tight text-fg">{game.title}</h1>
             <div className="mt-4">
@@ -67,13 +66,13 @@ function GameDetailPage() {
         </div>
 
         <section className="mt-14">
-          <p className="text-xs tracking-[0.28em] text-gold uppercase">{tx("Archive")}</p>
-          <h2 className="mt-2 font-display text-3xl text-fg">{tx("Downloads")}</h2>
+          <p className="text-xs tracking-[0.28em] text-gold uppercase">{"الأرشيف"}</p>
+          <h2 className="mt-2 font-display text-3xl text-fg">{"التنزيلات"}</h2>
           {!hasFiles ? (
             <div className="mt-6">
               <EmptyState
-                title={tx("No downloadable files have been published for this game yet.")}
-                body="Check back when the next version is released."
+                title={"لم يتم نشر ملفات قابلة للتنزيل لهذه اللعبة بعد."}
+                body={"تحقق مجددًا عند إصدار النسخة التالية."}
               />
             </div>
           ) : (
@@ -101,7 +100,7 @@ function GameDetailPage() {
                               <HardDrive className="size-3.5" /> {formatBytes(file.file_size)}
                             </span>
                             <span>{file.download_count.toLocaleString()} downloads</span>
-                            <span>{tx("Added")} {formatDate(file.created_at)}</span>
+                            <span>{"أضيف في"} {formatDate(file.created_at)}</span>
                           </p>
                         </div>
                         <Button asChild>

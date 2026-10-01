@@ -2,7 +2,6 @@ import { Link } from "@tanstack/react-router";
 import { StatusBadge } from "@/components/games/status-badge";
 import { coverSrc } from "@/lib/format";
 import type { Game } from "@/lib/types";
-import { tx } from "@/lib/i18n";
 
 export function GameCard({ game }: { game: Game }) {
   return (
@@ -23,11 +22,11 @@ export function GameCard({ game }: { game: Game }) {
       <div className="flex min-w-0 flex-1 flex-col p-4">
         <div className="mb-1 flex items-center gap-1.5 overflow-hidden text-[10px] uppercase tracking-wider">
           <span className="shrink-0 text-gold">
-            {tx(game.platform_name ?? "")}
+            {game.platform_name ?? ""}
           </span>
           <span className="text-subtle">•</span>
           <span className="truncate text-muted">
-            {tx(game.project_type_name ?? "")}
+            {game.project_type_name ?? ""}
           </span>
         </div>
 

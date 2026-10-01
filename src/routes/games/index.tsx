@@ -5,7 +5,6 @@ import { GameCard } from "@/components/games/game-card";
 import { PublicShell } from "@/components/layout/public-shell";
 import { getLookups, listGames } from "@/lib/server/catalog";
 
-import { tx } from "@/lib/i18n";
 export const Route = createFileRoute("/games/")({
   validateSearch: parseCatalogSearch,
   loaderDeps: ({ search }) => search,
@@ -27,8 +26,8 @@ export const Route = createFileRoute("/games/")({
   },
   head: () => ({
     meta: [
-      { title: "Games — GOATED LIONKING" },
-      { name: "description", content: "Browse Arabic localization projects, patches, mods, fonts, and dubbed audio." },
+      { title: "الألعاب — GOATED LIONKING" },
+      { name: "description", content: "تصفح مشاريع التعريب والرقع والتعديلات والخطوط والصوت المدبلج." },
     ],
   }),
   component: GamesPage,
@@ -44,8 +43,8 @@ function GamesPage() {
   return (
     <PublicShell>
       <main className="mx-auto w-full max-w-6xl px-4 py-12">
-        <p className="text-xs tracking-[0.28em] text-gold uppercase">{tx("Catalog")}</p>
-        <h1 className="mt-2 font-display text-4xl text-fg">{tx("Games")}</h1>
+        <p className="text-xs tracking-[0.28em] text-gold uppercase">{"الكتالوج"}</p>
+        <h1 className="mt-2 font-display text-4xl text-fg">{"الألعاب"}</h1>
         <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted">
           Every published localization project, patch, font, and audio pack in the archive.
         </p>
@@ -97,7 +96,7 @@ function GamesPage() {
 
         <div className="mt-8">
           {games.length === 0 ? (
-            <EmptyState title="No games available yet." body="No published projects match these filters." />
+            <EmptyState title={"لا توجد ألعاب متاحة حاليًا."} body={"لا توجد مشاريع منشورة تطابق عوامل التصفية."} />
           ) : (
             <div className="grid gap-4 grid-cols-1">
               {games.map((game) => (

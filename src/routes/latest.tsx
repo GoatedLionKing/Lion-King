@@ -5,13 +5,12 @@ import { PublicShell } from "@/components/layout/public-shell";
 import { coverSrc, formatDate } from "@/lib/format";
 import { getLatestReleases } from "@/lib/server/catalog";
 
-import { tx } from "@/lib/i18n";
 export const Route = createFileRoute("/latest")({
   loader: () => getLatestReleases(),
   head: () => ({
     meta: [
-      { title: "Latest Releases — GOATED LIONKING" },
-      { name: "description", content: "The newest Arabic localization files and project updates." },
+      { title: "أحدث الإصدارات — GOATED LIONKING" },
+      { name: "description", content: "أحدث ملفات التعريب وتحديثات المشاريع." },
     ],
   }),
   component: LatestPage,
@@ -22,14 +21,14 @@ function LatestPage() {
   return (
     <PublicShell>
       <main className="mx-auto w-full max-w-6xl px-4 py-12">
-        <p className="text-xs tracking-[0.28em] text-gold uppercase">{tx("Just in")}</p>
-        <h1 className="mt-2 font-display text-4xl text-fg">{tx("Latest Releases")}</h1>
+        <p className="text-xs tracking-[0.28em] text-gold uppercase">{"أحدث الإضافات"}</p>
+        <h1 className="mt-2 font-display text-4xl text-fg">{"أحدث الإصدارات"}</h1>
         <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted">
           Recently added files, sorted automatically by newest date.
         </p>
         <div className="mt-8">
           {latest.length === 0 ? (
-            <EmptyState title="No releases yet." body="New files will appear here once they are published." />
+            <EmptyState title={"لا توجد إصدارات بعد."} body={"ستظهر الملفات الجديدة هنا فور نشرها."} />
           ) : (
             <ul className="divide-y divide-border overflow-hidden rounded-xl border border-border bg-surface">
               {latest.map((item) => (

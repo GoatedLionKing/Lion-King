@@ -3,7 +3,6 @@ import { Toaster } from "sonner";
 import { NotFoundPage } from "@/lib/error-component";
 import { AuthProvider } from "@/lib/auth/provider";
 import { SiteAudio } from "@/components/layout/site-audio";
-import { LanguageProvider } from "@/lib/i18n";
 import appCss from "../styles.css?url";
 
 const APP_NAME = "GOATED LIONKING";
@@ -45,13 +44,11 @@ function RootComponent() {
         <HeadContent />
       </head>
       <body className="min-h-dvh bg-bg text-fg">
-        <LanguageProvider>
           <AuthProvider>
             <Outlet />
             <SiteAudio />
             <Toaster theme="dark" position="bottom-right" richColors={false} />
           </AuthProvider>
-        </LanguageProvider>
         <Scripts />
       </body>
     </html>

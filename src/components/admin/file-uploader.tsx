@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { tx } from "@/lib/i18n";
 import type { Version } from "@/lib/types";
 import { addExternalFile } from "@/lib/server/admin";
 
@@ -30,20 +29,20 @@ export function FileUploader({
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     if (!versionId) {
-      setError(tx("Create a version first."));
+      setError("أنشئ إصدارًا أولًا.");
       return;
     }
     if (!downloadUrl.trim()) {
-      setError(tx("Enter a MediaFire URL."));
+      setError("أدخل رابط MediaFire.");
       return;
     }
     if (!filename.trim()) {
-      setError(tx("Enter a filename."));
+      setError("أدخل اسم الملف.");
       return;
     }
     const mb = Number(sizeMb);
     if (!Number.isFinite(mb) || mb < 0) {
-      setError(tx("Enter the file size in MB."));
+      setError("أدخل حجم الملف بالميغابايت.");
       return;
     }
     setPending(true);
@@ -62,7 +61,7 @@ export function FileUploader({
           visible,
         },
       });
-      toast.success(tx("Download link added"));
+      toast.success("تمت إضافة رابط التحميل");
       setName("");
       setFilename("");
       setDescription("");
@@ -72,21 +71,21 @@ export function FileUploader({
       onUploaded();
     } catch (err) {
       setPending(false);
-      setError(err instanceof Error ? err.message : tx("Failed to add download link"));
+      setError(err instanceof Error ? err.message : "فشل إضافة رابط التحميل");
     }
   }
 
   return (
     <form onSubmit={submit} className="rounded-xl border border-dashed border-border bg-surface p-5">
-      <h3 className="font-display text-lg text-fg">{tx("Add external file")}</h3>
-      <p className="mt-1 text-sm text-muted">{tx("Game files are not uploaded to this site. Store them on MediaFire and add the download link here.")}</p>
+      <h3 className="font-display text-lg text-fg">{"إضافة ملف خارجي"}</h3>
+      <p className="mt-1 text-sm text-muted">{"ملفات الترجمة لا تُرفع إلى الموقع. خزّنها على MediaFire وأضف رابط التحميل هنا."}</p>
       <div className="mt-4 grid gap-3 sm:grid-cols-2">
         <label className="block space-y-1.5">
-          <Label>{tx("Name")}</Label>
+          <Label>{"الاسم"}</Label>
           <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="Arabic Patch" />
         </label>
         <label className="block space-y-1.5">
-          <Label>{tx("Version")}</Label>
+          <Label>{"الإصدار"}</Label>
           <select
             className="h-11 w-full rounded-md border border-border bg-surface px-3 text-sm text-fg"
             value={versionId}
@@ -96,29 +95,29 @@ export function FileUploader({
           </select>
         </label>
         <label className="block space-y-1.5">
-          <Label>{tx("Filename")}</Label>
+          <Label>{"اسم الملف"}</Label>
           <Input required value={filename} onChange={(e) => setFilename(e.target.value)} placeholder="GOW_Arabic_Patch_v1.0.zip" />
         </label>
         <label className="block space-y-1.5">
-          <Label>{tx("Size (MB)")}</Label>
+          <Label>{"الحجم (MB)"}</Label>
           <Input required type="number" min="0" step="0.01" value={sizeMb} onChange={(e) => setSizeMb(e.target.value)} placeholder="250" />
         </label>
         <label className="block space-y-1.5 sm:col-span-2">
-          <Label>{tx("MediaFire URL")}</Label>
+          <Label>{"رابط MediaFire"}</Label>
           <Input required type="url" value={downloadUrl} onChange={(e) => setDownloadUrl(e.target.value)} placeholder="https://www.mediafire.com/file/..." dir="ltr" />
         </label>
         <label className="block space-y-1.5 sm:col-span-2">
-          <Label>{tx("Description")}</Label>
+          <Label>{"الوصف"}</Label>
           <Textarea value={description} onChange={(e) => setDescription(e.target.value)} className="min-h-20" />
         </label>
         <label className="flex h-11 items-center gap-2 text-sm text-muted">
           <input type="checkbox" checked={visible} onChange={(e) => setVisible(e.target.checked)} />
-          {tx("Visible to visitors")}
+          {"ظاهر للزوار"}
         </label>
       </div>
       {error ? <p className="mt-3 text-sm text-danger">{error}</p> : null}
       <div className="mt-4">
-        <Button type="submit" disabled={pending}>{pending ? tx("Saving…") : tx("Add download link")}</Button>
+        <Button type="submit" disabled={pending}>{pending ? "جارٍ الحفظ…" : "إضافة رابط التحميل"}</Button>
       </div>
     </form>
   );

@@ -9,7 +9,6 @@ import { slugify } from "@/lib/slug";
 import { uploadWithProgress } from "@/lib/upload-client";
 import type { Game, Lookups } from "@/lib/types";
 
-import { tx } from "@/lib/i18n";
 export type GameFormValue = {
   title: string;
   slug: string;
@@ -73,9 +72,9 @@ export function GameForm({
         () => undefined,
       );
       onChange({ ...value, cover: result.storageKey });
-      toast.success(tx("Cover uploaded"));
+      toast.success("تم رفع الغلاف");
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : tx("Cover upload failed"));
+      toast.error(err instanceof Error ? err.message : "فشل رفع الغلاف");
     } finally {
       setUploading(false);
     }
@@ -90,7 +89,7 @@ export function GameForm({
       }}
     >
       <label className="block space-y-1.5">
-        <Label>{tx("Title")}</Label>
+        <Label>{"العنوان"}</Label>
         <Input
           required
           value={value.title}
@@ -105,11 +104,11 @@ export function GameForm({
         />
       </label>
       <label className="block space-y-1.5">
-        <Label>{tx("Slug")}</Label>
+        <Label>{"الرابط المختصر"}</Label>
         <Input value={value.slug} onChange={(e) => onChange({ ...value, slug: e.target.value })} />
       </label>
       <label className="block space-y-1.5">
-        <Label>{tx("Description")}</Label>
+        <Label>{"الوصف"}</Label>
         <Textarea value={value.description} onChange={(e) => onChange({ ...value, description: e.target.value })} />
       </label>
       <div className="flex flex-col gap-3 sm:flex-row">
@@ -117,14 +116,14 @@ export function GameForm({
           {value.cover ? <img src={coverSrc(value.cover)} alt="" className="size-full object-cover" /> : null}
         </div>
         <label className="block flex-1 space-y-1.5">
-          <Label>{tx("Cover")}</Label>
+          <Label>{"الغلاف"}</Label>
           <Input type="file" accept="image/*" onChange={(e) => void onCover(e.target.files?.[0])} />
-          {uploading ? <p className="text-xs text-muted">{tx("Uploading cover…")}</p> : null}
+          {uploading ? <p className="text-xs text-muted">{"جارٍ رفع الغلاف…"}</p> : null}
         </label>
       </div>
       <div className="grid gap-3 sm:grid-cols-3">
         <label className="block space-y-1.5">
-          <Label>{tx("Platform")}</Label>
+          <Label>{"المنصة"}</Label>
           <select
             className={selectClass}
             value={value.platform_id}
@@ -132,13 +131,13 @@ export function GameForm({
           >
             {lookups.platforms.map((item) => (
               <option key={item.id} value={item.id}>
-                {tx(item.name)}
+                {item.name}
               </option>
             ))}
           </select>
         </label>
         <label className="block space-y-1.5">
-          <Label>{tx("Project type")}</Label>
+          <Label>{"نوع المشروع"}</Label>
           <select
             className={selectClass}
             value={value.project_type_id}
@@ -146,13 +145,13 @@ export function GameForm({
           >
             {lookups.projectTypes.map((item) => (
               <option key={item.id} value={item.id}>
-                {tx(item.name)}
+                {item.name}
               </option>
             ))}
           </select>
         </label>
         <label className="block space-y-1.5">
-          <Label>{tx("Status")}</Label>
+          <Label>{"الحالة"}</Label>
           <select
             className={selectClass}
             value={value.status_id}
@@ -160,7 +159,7 @@ export function GameForm({
           >
             {lookups.statuses.map((item) => (
               <option key={item.id} value={item.id}>
-                {tx(item.name)}
+                {item.name}
               </option>
             ))}
           </select>
@@ -168,15 +167,15 @@ export function GameForm({
       </div>
       <div className="grid gap-3 sm:grid-cols-2">
         <label className="block space-y-1.5">
-          <Label>{tx("Version label")}</Label>
+          <Label>{"اسم الإصدار"}</Label>
           <Input value={value.version} onChange={(e) => onChange({ ...value, version: e.target.value })} />
         </label>
         <label className="block space-y-1.5">
-          <Label>{tx("Developer")}</Label>
+          <Label>{"المطور"}</Label>
           <Input value={value.developer} onChange={(e) => onChange({ ...value, developer: e.target.value })} />
         </label>
         <label className="block space-y-1.5">
-          <Label>{tx("Original release")}</Label>
+          <Label>{"الإصدار الأصلي"}</Label>
           <Input
             type="date"
             value={value.original_release}
@@ -184,7 +183,7 @@ export function GameForm({
           />
         </label>
         <label className="block space-y-1.5">
-          <Label>{tx("Localization release")}</Label>
+          <Label>{"إصدار التعريب"}</Label>
           <Input
             type="date"
             value={value.localization_release}
@@ -199,7 +198,7 @@ export function GameForm({
             checked={value.featured}
             onChange={(e) => onChange({ ...value, featured: e.target.checked })}
           />
-          {tx("Featured")}
+          {"مميز"}
         </label>
         <label className="inline-flex h-11 items-center gap-2">
           <input
@@ -207,7 +206,7 @@ export function GameForm({
             checked={value.published}
             onChange={(e) => onChange({ ...value, published: e.target.checked })}
           />
-          {tx("Published")}
+          {"منشور"}
         </label>
       </div>
       <Button type="submit" disabled={pending || uploading}>

@@ -3,7 +3,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import type { Lookups } from "@/lib/types";
 
-import { tx } from "@/lib/i18n";
 export type CatalogSearch = {
   q?: string;
   platform?: string;
@@ -48,10 +47,10 @@ export function CatalogFilters({
   return (
     <div className="grid gap-3 rounded-xl border border-border bg-surface p-4 sm:grid-cols-2 lg:grid-cols-4">
       <label className="block space-y-1.5">
-        <Label>{tx("Search")}</Label>
+        <Label>{"البحث"}</Label>
         <Input
           defaultValue={value.q ?? ""}
-          placeholder={tx("Title, platform, type")}
+          placeholder={"العنوان، المنصة، النوع"}
           onKeyDown={(e) => {
             if (e.key === "Enter") patch({ q: (e.target as HTMLInputElement).value });
           }}
@@ -59,42 +58,42 @@ export function CatalogFilters({
         />
       </label>
       <label className="block space-y-1.5">
-        <Label>{tx("Platform")}</Label>
+        <Label>{"المنصة"}</Label>
         <select
           className={selectClass}
           value={value.platform ?? ""}
           onChange={(e) => patch({ platform: e.target.value })}
         >
-          <option value="">{tx("All platforms")}</option>
+          <option value="">{"كل المنصات"}</option>
           {lookups.platforms.map((p) => (
             <option key={p.id} value={p.id}>
-              {tx(p.name)}
+              {p.name}
             </option>
           ))}
         </select>
       </label>
       <label className="block space-y-1.5">
-        <Label>{tx("Project type")}</Label>
+        <Label>{"نوع المشروع"}</Label>
         <select className={selectClass} value={value.type ?? ""} onChange={(e) => patch({ type: e.target.value })}>
-          <option value="">{tx("All types")}</option>
+          <option value="">{"كل الأنواع"}</option>
           {lookups.projectTypes.map((p) => (
             <option key={p.id} value={p.id}>
-              {tx(p.name)}
+              {p.name}
             </option>
           ))}
         </select>
       </label>
       <label className="block space-y-1.5">
-        <Label>{tx("Status")}</Label>
+        <Label>{"الحالة"}</Label>
         <select
           className={selectClass}
           value={value.status ?? ""}
           onChange={(e) => patch({ status: e.target.value })}
         >
-          <option value="">{tx("All statuses")}</option>
+          <option value="">{"كل الحالات"}</option>
           {lookups.statuses.map((p) => (
             <option key={p.id} value={p.id}>
-              {tx(p.name)}
+              {p.name}
             </option>
           ))}
         </select>

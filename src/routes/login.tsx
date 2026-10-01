@@ -10,12 +10,11 @@ import { RedirectToSignIn } from "@/lib/auth/gates";
 import { useCurrentUserState } from "@/lib/auth/use-current-user";
 import { hasOwner } from "@/lib/server/admin-guard";
 
-import { tx } from "@/lib/i18n";
 export const Route = createFileRoute("/login")({
   loader: () => hasOwner(),
   component: LoginPage,
   head: () => ({
-    meta: [{ title: "Admin Login — GOATED LIONKING" }, { name: "robots", content: "noindex" }],
+    meta: [{ title: "دخول الإدارة — GOATED LIONKING" }, { name: "robots", content: "noindex" }],
   }),
 });
 
@@ -30,18 +29,18 @@ function LoginPage() {
       <main className="mx-auto flex min-h-[70vh] w-full max-w-md flex-col justify-center px-4 py-16">
         <div className="rounded-xl border border-border bg-surface p-6">
           <LionMark className="size-10" />
-          <h1 className="mt-4 font-display text-2xl text-fg">{tx("Admin Login")}</h1>
+          <h1 className="mt-4 font-display text-2xl text-fg">{"دخول الإدارة"}</h1>
           <p className="mt-2 text-sm leading-relaxed text-muted">
-            {tx("Private access for the site owner. Visitors do not need an account.")}
+            {"وصول خاص بمالك الموقع. لا يحتاج الزوار إلى حساب."}
           </p>
           {authEnabled ? (
             <div className="mt-6">
               <EmailForm allowSignUp={!ownerExists} />
             </div>
           ) : (
-            <p className="mt-6 text-sm text-muted">{tx("Sign-in is disabled.")}</p>
+            <p className="mt-6 text-sm text-muted">{"تسجيل الدخول معطل."}</p>
           )}
-          {isPending ? <p className="mt-4 text-xs text-subtle">{tx("Checking session…")}</p> : null}
+          {isPending ? <p className="mt-4 text-xs text-subtle">{"جارٍ التحقق من الجلسة…"}</p> : null}
         </div>
       </main>
     </PublicShell>
@@ -75,7 +74,7 @@ function EmailForm({ allowSignUp }: { allowSignUp: boolean }) {
       }
       window.location.href = "/owner-panel";
     } catch (err) {
-      setError(err instanceof Error ? err.message : tx("Something went wrong"));
+      setError(err instanceof Error ? err.message : "حدث خطأ ما");
     } finally {
       setPending(false);
     }
@@ -85,16 +84,16 @@ function EmailForm({ allowSignUp }: { allowSignUp: boolean }) {
     <form onSubmit={submit} className="space-y-3">
       {mode === "up" ? (
         <label className="block space-y-1.5">
-          <Label>{tx("Name")}</Label>
+          <Label>{"الاسم"}</Label>
           <Input value={name} onChange={(e) => setName(e.target.value)} autoComplete="name" />
         </label>
       ) : null}
       <label className="block space-y-1.5">
-        <Label>{tx("Email")}</Label>
+        <Label>{"البريد الإلكتروني"}</Label>
         <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required autoComplete="email" />
       </label>
       <label className="block space-y-1.5">
-        <Label>{tx("Password")}</Label>
+        <Label>{"كلمة المرور"}</Label>
         <Input
           type="password"
           value={password}
@@ -106,7 +105,7 @@ function EmailForm({ allowSignUp }: { allowSignUp: boolean }) {
       </label>
       {error ? <p className="text-sm text-danger">{error}</p> : null}
       <Button type="submit" className="w-full" disabled={pending}>
-        {pending ? tx("Please wait…") : mode === "up" ? tx("Create owner account") : tx("Sign in")}
+        {pending ? "يرجى الانتظار…" : mode === "up" ? "إنشاء حساب المالك" : "تسجيل الدخول"}
       </Button>
       {allowSignUp ? (
         <button
@@ -114,7 +113,7 @@ function EmailForm({ allowSignUp }: { allowSignUp: boolean }) {
           className="w-full text-center text-xs text-muted hover:text-gold"
           onClick={() => setMode(mode === "up" ? "in" : "up")}
         >
-          {mode === "up" ? tx("Already have an account? Sign in") : tx("Need the first owner account? Create it")}
+          {mode === "up" ? "لديك حساب بالفعل؟ تسجيل الدخول" : "هل تحتاج إلى إنشاء حساب المالك الأول؟ أنشئه الآن"}
         </button>
       ) : null}
     </form>

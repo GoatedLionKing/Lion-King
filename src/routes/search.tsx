@@ -8,7 +8,6 @@ import { formatBytes } from "@/lib/format";
 import { searchCatalog } from "@/lib/server/catalog";
 import { useNavigate } from "@tanstack/react-router";
 
-import { tx } from "@/lib/i18n";
 export const Route = createFileRoute("/search")({
   validateSearch: (search: Record<string, unknown>): { q: string; page?: number } => ({
     q: typeof search.q === "string" ? search.q : "",
@@ -21,7 +20,7 @@ export const Route = createFileRoute("/search")({
       {
         title: match.search.q ? `Search — GOATED LIONKING` : "Search — GOATED LIONKING",
       },
-      { name: "description", content: "Search Arabic localization games, files, platforms, and project types." },
+      { name: "description", content: "ابحث عن ألعاب التعريب والملفات والمنصات وأنواع المشاريع." },
     ],
   }),
   component: SearchPage,
@@ -36,8 +35,8 @@ function SearchPage() {
   return (
     <PublicShell>
       <main className="mx-auto w-full max-w-6xl px-4 py-12">
-        <p className="text-xs tracking-[0.28em] text-gold uppercase">{tx("Archive")}</p>
-        <h1 className="mt-2 font-display text-4xl text-fg">{tx("Search")}</h1>
+        <p className="text-xs tracking-[0.28em] text-gold uppercase">{"الأرشيف"}</p>
+        <h1 className="mt-2 font-display text-4xl text-fg">{"البحث"}</h1>
         <form
           className="mt-6 max-w-xl"
           onSubmit={(e) => {
@@ -46,22 +45,22 @@ function SearchPage() {
             void navigate({ to: "/search", search: { q, page: 1 } });
           }}
         >
-          <Input name="q" defaultValue={search.q} placeholder={tx("Search titles, files, platforms…")} autoFocus />
+          <Input name="q" defaultValue={search.q} placeholder={"ابحث في العناوين والملفات والمنصات…"} autoFocus />
         </form>
 
         {!search.q.trim() ? (
           <div className="mt-10">
-            <EmptyState title="Start typing to search." body="Find games, file names, platforms, and project types." />
+            <EmptyState title={"ابدأ بالكتابة للبحث."} body={"ابحث عن الألعاب وأسماء الملفات والمنصات وأنواع المشاريع."} />
           </div>
         ) : empty ? (
           <div className="mt-10">
-            <EmptyState title="No results found." body="Try a different title, platform, or file name." />
+            <EmptyState title={"لم يتم العثور على نتائج."} body={"جرّب عنوانًا أو منصة أو اسم ملف مختلفًا."} />
           </div>
         ) : (
           <>
             {games.length > 0 ? (
               <section className="mt-10">
-                <h2 className="font-display text-2xl text-fg">{tx("Games")}</h2>
+                <h2 className="font-display text-2xl text-fg">{"الألعاب"}</h2>
                 <div className="mt-5 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
                   {games.map((game) => (
                     <GameCard key={game.id} game={game} />
@@ -78,7 +77,7 @@ function SearchPage() {
             ) : null}
             {files.length > 0 ? (
               <section className="mt-12">
-                <h2 className="font-display text-2xl text-fg">{tx("Files")}</h2>
+                <h2 className="font-display text-2xl text-fg">{"الملفات"}</h2>
                 <ul className="mt-5 divide-y divide-border overflow-hidden rounded-xl border border-border bg-surface">
                   {files.map((file) => (
                     <li key={file.id} className="flex flex-col gap-2 px-5 py-4 sm:flex-row sm:items-center">

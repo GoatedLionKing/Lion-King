@@ -5,7 +5,6 @@ import { GameCard } from "@/components/games/game-card";
 import { PublicShell } from "@/components/layout/public-shell";
 import { getLookups, listGames } from "@/lib/server/catalog";
 
-import { tx } from "@/lib/i18n";
 export const Route = createFileRoute("/projects")({
   validateSearch: parseCatalogSearch,
   loaderDeps: ({ search }) => search,
@@ -26,8 +25,8 @@ export const Route = createFileRoute("/projects")({
   },
   head: () => ({
     meta: [
-      { title: "Projects — GOATED LIONKING" },
-      { name: "description", content: "Arabic localization, dubbing, translation, mods, patches, fonts, and audio." },
+      { title: "المشاريع — GOATED LIONKING" },
+      { name: "description", content: "تعريب الألعاب والدبلجة والترجمة والتعديلات والرقع والخطوط والصوت." },
     ],
   }),
   component: ProjectsPage,
@@ -39,8 +38,8 @@ function ProjectsPage() {
   return (
     <PublicShell>
       <main className="mx-auto w-full max-w-6xl px-4 py-12">
-        <p className="text-xs tracking-[0.28em] text-gold uppercase">{tx("Work")}</p>
-        <h1 className="mt-2 font-display text-4xl text-fg">{tx("Projects")}</h1>
+        <p className="text-xs tracking-[0.28em] text-gold uppercase">{"المشاريع"}</p>
+        <h1 className="mt-2 font-display text-4xl text-fg">{"المشاريع"}</h1>
         <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted">
           Localization, dubbing, translation, mods, patches, fonts, and audio — filtered the way you need them.
         </p>
@@ -49,7 +48,7 @@ function ProjectsPage() {
         </div>
         <div className="mt-8">
           {games.length === 0 ? (
-            <EmptyState title="No projects available yet." body="Published work will appear in this list." />
+            <EmptyState title={"لا توجد مشاريع متاحة حاليًا."} body={"ستظهر الأعمال المنشورة في هذه القائمة."} />
           ) : (
             <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {games.map((game) => (

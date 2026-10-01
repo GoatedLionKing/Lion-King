@@ -10,18 +10,16 @@ import { useCurrentUserState } from "@/lib/auth/use-current-user";
 import { checkIsAdmin } from "@/lib/server/admin-guard";
 import { useEffect } from "react";
 
-import { LanguageSwitcher, tx, useLanguage } from "@/lib/i18n";
 const NAV = [
-  { to: "/", label: "Home" },
-  { to: "/games", label: "Games" },
-  { to: "/projects", label: "Projects" },
-  { to: "/latest", label: "Latest" },
-  { to: "/search", label: "Search" },
+  { to: "/", label: "الرئيسية" },
+  { to: "/games", label: "الألعاب" },
+  { to: "/projects", label: "المشاريع" },
+  { to: "/latest", label: "الأحدث" },
+  { to: "/search", label: "البحث" },
 ] as const;
 
 export function SiteHeader() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
-  useLanguage();
   const { user, isPending } = useCurrentUserState();
   const [admin, setAdmin] = useState(false);
   const [open, setOpen] = useState(false);
@@ -66,7 +64,7 @@ export function SiteHeader() {
               active ? "text-gold" : "text-muted hover:text-fg"
             }`}
           >
-            {tx(item.label)}
+            {item.label}
           </Link>
         );
       })}
@@ -92,11 +90,10 @@ export function SiteHeader() {
         >
           <label className="relative block">
             <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-subtle" />
-            <Input name="q" placeholder={tx("Search games")} className="h-10 pl-9" />
+            <Input name="q" placeholder={"ابحث عن لعبة"} className="h-10 pl-9" />
           </label>
         </form>
         <div className="ml-auto flex items-center gap-2">
-          <LanguageSwitcher />
           {isPending ? (
             <div className="h-8 w-20 animate-pulse rounded-md bg-surface-2" />
           ) : (
@@ -105,7 +102,7 @@ export function SiteHeader() {
               <SignedIn>
                 {admin ? (
                   <Button asChild size="sm">
-                    <Link to="/owner-panel">{tx("Dashboard")}</Link>
+                    <Link to="/owner-panel">{"لوحة التحكم"}</Link>
                   </Button>
                 ) : null}
                 <div className="hidden sm:block">
@@ -116,11 +113,11 @@ export function SiteHeader() {
           )}
           <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="md:hidden" aria-label={tx("Menu")}>
+              <Button variant="ghost" size="icon" className="md:hidden" aria-label={"القائمة"}>
                 <Menu className="size-5" />
               </Button>
             </SheetTrigger>
-            <SheetContent title={tx("Menu")}>
+            <SheetContent title={"القائمة"}>
               {links}
               <form
                 className="mt-6"
@@ -129,16 +126,16 @@ export function SiteHeader() {
                   onSearch(e.currentTarget);
                 }}
               >
-                <Input name="q" placeholder={tx("Search games")} />
+                <Input name="q" placeholder={"ابحث عن لعبة"} />
                 <Button type="submit" className="mt-3 w-full">
-                  {tx("Search")}
+                  {"البحث"}
                 </Button>
               </form>
               <div className="mt-auto pt-8 sm:hidden">
                 <UserButton />
               </div>
               <SheetClose asChild>
-                <span className="sr-only">{tx("Close")}</span>
+                <span className="sr-only">{"إغلاق"}</span>
               </SheetClose>
             </SheetContent>
           </Sheet>

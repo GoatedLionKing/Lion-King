@@ -9,7 +9,6 @@ import { deleteLookup, getStorageInfo, updateSettings, upsertLookup } from "@/li
 import { getLookups, getSiteSettings } from "@/lib/server/catalog";
 import type { Lookups, SiteSettings } from "@/lib/types";
 
-import { tx } from "@/lib/i18n";
 export const Route = createFileRoute("/owner-panel/settings")({
   component: SettingsPage,
 });
@@ -28,7 +27,7 @@ function SettingsPage() {
   }
 
   useEffect(() => {
-    reload().catch((err: unknown) => toast.error(err instanceof Error ? err.message : "Failed to load settings"));
+    reload().catch((err: unknown) => toast.error(err instanceof Error ? err.message : "فشل تحميل الإعدادات"));
   }, []);
 
   if (!settings || !lookups) return <div className="h-40 animate-pulse rounded-xl bg-surface" />;
@@ -36,8 +35,8 @@ function SettingsPage() {
   return (
     <div className="max-w-2xl space-y-10">
       <div>
-        <p className="text-xs tracking-[0.28em] text-gold uppercase">{tx("Site")}</p>
-        <h1 className="mt-2 font-display text-3xl text-fg">{tx("Settings")}</h1>
+        <p className="text-xs tracking-[0.28em] text-gold uppercase">{"الموقع"}</p>
+        <h1 className="mt-2 font-display text-3xl text-fg">{"الإعدادات"}</h1>
       </div>
 
       <form
@@ -62,57 +61,57 @@ function SettingsPage() {
                 allowed_file_types: settings.allowed_file_types,
               },
             });
-            toast.success("Settings saved");
+            toast.success("تم حفظ الإعدادات");
           } catch (err) {
-            toast.error(err instanceof Error ? err.message : tx("Save failed"));
+            toast.error(err instanceof Error ? err.message : "فشل الحفظ");
           } finally {
             setPending(false);
           }
         }}
       >
-        <Field label="Site name">
+        <Field label={"اسم الموقع"}>
           <Input value={settings.site_name} onChange={(e) => setSettings({ ...settings, site_name: e.target.value })} />
         </Field>
-        <Field label="Tagline">
+        <Field label={"الشعار"}>
           <Input value={settings.tagline} onChange={(e) => setSettings({ ...settings, tagline: e.target.value })} />
         </Field>
-        <Field label="Site description">
+        <Field label={"وصف الموقع"}>
           <Textarea
             value={settings.site_description}
             onChange={(e) => setSettings({ ...settings, site_description: e.target.value })}
           />
         </Field>
-        <Field label="Hero title">
+        <Field label={"العنوان الرئيسي"}>
           <Input value={settings.hero_title} onChange={(e) => setSettings({ ...settings, hero_title: e.target.value })} />
         </Field>
-        <Field label="Hero subtitle">
+        <Field label={"العنوان الفرعي"}>
           <Input
             value={settings.hero_subtitle}
             onChange={(e) => setSettings({ ...settings, hero_subtitle: e.target.value })}
           />
         </Field>
-        <Field label="Hero description">
+        <Field label={"وصف الصفحة الرئيسية"}>
           <Textarea
             value={settings.hero_description}
             onChange={(e) => setSettings({ ...settings, hero_description: e.target.value })}
           />
         </Field>
-        <Field label="Default SEO title">
+        <Field label={"عنوان SEO الافتراضي"}>
           <Input value={settings.seo_title} onChange={(e) => setSettings({ ...settings, seo_title: e.target.value })} />
         </Field>
-        <Field label="Default SEO description">
+        <Field label={"وصف SEO الافتراضي"}>
           <Textarea
             value={settings.seo_description}
             onChange={(e) => setSettings({ ...settings, seo_description: e.target.value })}
           />
         </Field>
-        <Field label="Featured heading">
+        <Field label={"عنوان المشاريع المميزة"}>
           <Input
             value={settings.featured_heading}
             onChange={(e) => setSettings({ ...settings, featured_heading: e.target.value })}
           />
         </Field>
-        <Field label="Latest heading">
+        <Field label={"عنوان أحدث الإصدارات"}>
           <Input
             value={settings.latest_heading}
             onChange={(e) => setSettings({ ...settings, latest_heading: e.target.value })}
@@ -126,9 +125,9 @@ function SettingsPage() {
             value={settings.max_upload_bytes}
             onChange={(e) => setSettings({ ...settings, max_upload_bytes: Math.min(16106127360, Number(e.target.value)) })}
           />
-          <p className="text-xs text-subtle">{tx("Game files are hosted externally on MediaFire. Cover uploads use the setting above.")}</p>
+          <p className="text-xs text-subtle">{"ملفات الألعاب مستضافة خارجيًا على MediaFire. إعداد الحجم أعلاه مخصص لرفع الأغلفة."}</p>
         </Field>
-        <Field label="Allowed file types">
+        <Field label={"أنواع الملفات المسموح بها"}>
           <Input
             value={settings.allowed_file_types}
             onChange={(e) => setSettings({ ...settings, allowed_file_types: e.target.value })}
@@ -140,33 +139,33 @@ function SettingsPage() {
       </form>
 
       <section className="rounded-xl border border-border bg-surface p-5">
-        <h2 className="font-display text-xl text-fg">{tx("Storage")}</h2>
+        <h2 className="font-display text-xl text-fg">{"التخزين"}</h2>
         <p className="mt-2 text-sm leading-relaxed text-muted">
-          {tx("Game file hosting:")} <span className="text-fg">{tx("External MediaFire links")}</span>. {tx("The website stores file metadata and the download URL; game binaries are not stored on this server.")}
-          {tx("Set")} <code className="text-gold">STORAGE_DIR</code> {tx("to choose where site assets such as covers are stored.")}
+          {"استضافة ملفات الألعاب:"} <span className="text-fg">{"روابط MediaFire خارجية"}</span>. {"يخزن الموقع بيانات الملف ورابط التنزيل فقط؛ ولا تُخزن ملفات الألعاب على هذا الخادم."}
+          {"عيّن"} <code className="text-gold">STORAGE_DIR</code> {"لاختيار مكان تخزين أصول الموقع مثل الأغلفة."}
         </p>
       </section>
 
       <LookupManager
-        title="Platforms"
+        title={"المنصات"}
         table="platforms"
         items={lookups.platforms}
         onChange={() => void reload()}
       />
       <LookupManager
-        title="Project types"
+        title={"أنواع المشاريع"}
         table="project_types"
         items={lookups.projectTypes}
         onChange={() => void reload()}
       />
       <LookupManager
-        title="Project status"
+        title={"حالة المشروع"}
         table="project_statuses"
         items={lookups.statuses}
         onChange={() => void reload()}
       />
       <LookupManager
-        title="Categories"
+        title={"التصنيفات"}
         table="categories"
         items={lookups.categories}
         onChange={() => void reload()}
@@ -211,7 +210,7 @@ function LookupManager({
                   await deleteLookup({ data: { table, id: item.id } });
                   onChange();
                 } catch (err) {
-                  toast.error(err instanceof Error ? err.message : "Cannot delete");
+                  toast.error(err instanceof Error ? err.message : "لا يمكن الحذف");
                 }
               }}
             >
