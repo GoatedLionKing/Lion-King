@@ -173,6 +173,7 @@ function FeaturedCarousel({
   games: Awaited<ReturnType<typeof getFeaturedGames>>;
 }) {
   const [active, setActive] = useState(0);
+  const [displayActive, setDisplayActive] = useState(0);
   const [direction, setDirection] = useState<1 | -1>(1);
   const [isAnimating, setIsAnimating] = useState(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -185,6 +186,7 @@ function FeaturedCarousel({
 
   useEffect(() => {
     setActive((current) => (count === 0 ? 0 : current % count));
+    setDisplayActive((current) => (count === 0 ? 0 : current % count));
 
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current);
@@ -201,8 +203,10 @@ function FeaturedCarousel({
     setDirection(step);
     setIsAnimating(true);
 
+    setActive((current) => (current + step + count) % count);
+
     timerRef.current = setTimeout(() => {
-      setActive((current) => (current + step + count) % count);
+      setDisplayActive((current) => (current + step + count) % count);
       setIsAnimating(false);
     }, 1000);
   };
