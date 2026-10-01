@@ -174,6 +174,8 @@ function FeaturedCarousel({
 }) {
   const [active, setActive] = useState(0);
   const [direction, setDirection] = useState<1 | -1>(1);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [dragStart, setDragStart] = useState<number | null>(null);
   const [dragX, setDragX] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
@@ -183,6 +185,10 @@ function FeaturedCarousel({
 
   useEffect(() => {
     setActive((current) => (count === 0 ? 0 : current % count));
+
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
   }, [count]);
 
   if (count === 0) {
@@ -190,8 +196,15 @@ function FeaturedCarousel({
   }
 
   const move = (step: 1 | -1) => {
+    if (isAnimating || count < 2) return;
+
     setDirection(step);
-    setActive((current) => (current + step + count) % count);
+    setIsAnimating(true);
+
+    timerRef.current = setTimeout(() => {
+      setActive((current) => (current + step + count) % count);
+      setIsAnimating(false);
+    }, 1000);
   };
 
   const getOffset = (index: number) => {
@@ -278,10 +291,6 @@ function FeaturedCarousel({
           {games.map((game, index) => {
             const offset = getOffset(index);
             const isActive = offset === 0;
-
-            if (Math.abs(offset) > 2) {
-              return null;
-            }
 
             const dragProgress = isDragging ? dragX / 300 : 0;
             const visualOffset = offset + dragProgress;
