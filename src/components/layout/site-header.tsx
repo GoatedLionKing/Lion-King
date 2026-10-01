@@ -94,6 +94,7 @@ export function SiteHeader() {
           </label>
         </form>
         <div className="ml-auto flex items-center gap-2">
+
           {isPending ? (
             <div className="h-8 w-20 animate-pulse rounded-md bg-surface-2" />
           ) : (
@@ -111,6 +112,9 @@ export function SiteHeader() {
               </SignedIn>
             </>
           )}
+    
+        </div>
+        <div className="mr-auto">
           <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon" className="md:hidden" aria-label={"القائمة"}>
