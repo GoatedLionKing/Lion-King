@@ -198,16 +198,17 @@ function FeaturedCarousel({
   }
 
   const move = (step: 1 | -1) => {
-    if (isAnimating || count < 2) return;
+    if (count < 2) return;
 
     setDirection(step);
-    setIsAnimating(true);
-
     setActive((current) => (current + step + count) % count);
+
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
 
     timerRef.current = setTimeout(() => {
       setDisplayActive((current) => (current + step + count) % count);
-      setIsAnimating(false);
     }, 700);
   };
 
