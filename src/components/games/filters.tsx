@@ -9,6 +9,7 @@ export type CatalogSearch = {
   platform?: string;
   type?: string;
   status?: string;
+  letter?: string;
   page?: number;
 };
 
@@ -28,6 +29,7 @@ export function CatalogFilters({
     const platform = next.platform ?? value.platform ?? "";
     const type = next.type ?? value.type ?? "";
     const status = next.status ?? value.status ?? "";
+    const letter = next.letter ?? value.letter ?? "";
     void navigate({
       to,
       search: {
@@ -35,6 +37,7 @@ export function CatalogFilters({
         ...(platform ? { platform } : {}),
         ...(type ? { type } : {}),
         ...(status ? { status } : {}),
+        ...(letter ? { letter } : {}),
       },
     });
   }
@@ -151,12 +154,14 @@ export function parseCatalogSearch(search: Record<string, unknown>): CatalogSear
   const platform = typeof search.platform === "string" ? search.platform : "";
   const type = typeof search.type === "string" ? search.type : "";
   const status = typeof search.status === "string" ? search.status : "";
+  const letter = typeof search.letter === "string" ? search.letter : "";
   const page = Math.max(1, Number(search.page) || 1);
   return {
     ...(q ? { q } : {}),
     ...(platform ? { platform } : {}),
     ...(type ? { type } : {}),
     ...(status ? { status } : {}),
+    ...(letter ? { letter } : {}),
     ...(page > 1 ? { page } : {}),
   };
 }

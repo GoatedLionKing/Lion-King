@@ -25,6 +25,37 @@ export function SiteFooter() {
           </Link>
         </nav>
       </div>
+      <div className="border-t border-border">
+        <div className="mx-auto grid max-w-6xl gap-4 px-4 py-7 sm:grid-cols-2">
+          <div className="rounded-lg border border-border bg-surface-2 p-4">
+            <p className="text-xs tracking-wider text-muted">
+              اشترك في قناتي على:
+            </p>
+            <a
+              href="https://www.youtube.com/@Goated_LionKing"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-1 inline-block font-display text-base text-gold transition-colors hover:text-gold-2"
+            >
+              YouTube
+            </a>
+          </div>
+
+          <div className="rounded-lg border border-border bg-surface-2 p-4">
+            <p className="text-xs tracking-wider text-muted">
+              وتابع صفحتي على:
+            </p>
+            <a
+              href="https://www.instagram.com/goated_lionking?stkn=Nzl1eWRucjQ0N2Fi"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-1 inline-block font-display text-base text-gold transition-colors hover:text-gold-2"
+            >
+              Instagram
+            </a>
+          </div>
+        </div>
+      </div>
       <div className="border-t border-border py-4 text-center text-xs text-subtle">
         © 2026 Goated LionKing — All Rights Reserved.
       </div>

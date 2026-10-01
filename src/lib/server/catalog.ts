@@ -35,6 +35,7 @@ const listInput = z.object({
   platform: z.string().optional(),
   type: z.string().optional(),
   status: z.string().optional(),
+  letter: z.string().regex(/^[A-Za-z]$/).optional(),
   page: z.number().int().min(1).optional(),
 });
 
@@ -63,6 +64,10 @@ export function buildGameFilters(data: z.infer<typeof listInput>, publishedOnly:
     clauses.push(`g.status_id = $${i++}`);
     params.push(data.status);
   }
+  if (data.letter) {
+    clauses.push(`lower(left(g.title, 1)) = lower($${i++})`);
+    params.push(data.letter);
+  }
   return { where: clauses.length ? `where ${clauses.join(" and ")}` : "", params };
 }
 
@@ -89,7 +94,7 @@ export const listGames = createServerFn({ method: "GET" })
        join project_types t on t.id = g.project_type_id
        join project_statuses s on s.id = g.status_id
        ${where}
-       order by g.updated_at desc
+       order by lower(g.title) asc, g.id asc
        limit ${PAGE_SIZE} offset ${offset}`,
       params,
     );

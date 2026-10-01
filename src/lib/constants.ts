@@ -1,4 +1,4 @@
-export const PAGE_SIZE = 12;
+export const PAGE_SIZE = 15;
 export const LATEST_LIMIT = 8;
 export const FEATURED_LIMIT = 6;
 

@@ -18,6 +18,7 @@ export const Route = createFileRoute("/games/")({
           platform: deps.platform || undefined,
           type: deps.type || undefined,
           status: deps.status || undefined,
+          letter: deps.letter || undefined,
           page: deps.page,
         },
       }),
@@ -36,6 +37,9 @@ export const Route = createFileRoute("/games/")({
 function GamesPage() {
   const { lookups, games, total, page, pageSize } = Route.useLoaderData();
   const search = Route.useSearch();
+  const navigate = Route.useNavigate();
+
+  const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
   return (
     <PublicShell>
@@ -48,11 +52,54 @@ function GamesPage() {
         <div className="mt-8">
           <CatalogFilters lookups={lookups} value={search} to="/games" />
         </div>
+        <div className="mt-5 overflow-x-auto rounded-xl border border-border bg-surface p-2">
+          <div className="flex min-w-max items-center gap-1">
+            <button
+              type="button"
+              className={`flex h-9 min-w-9 items-center justify-center rounded-md px-2 text-xs font-semibold transition-colors ${
+                !search.letter
+                  ? "bg-gold text-bg"
+                  : "text-muted hover:bg-surface-2 hover:text-gold-2"
+              }`}
+              onClick={() =>
+                void navigate({
+                  search: { ...search, letter: undefined, page: undefined },
+                })
+              }
+            >
+              ALL
+            </button>
+
+            {letters.map((letter) => (
+              <button
+                key={letter}
+                type="button"
+                className={`flex h-9 min-w-9 items-center justify-center rounded-md px-2 text-xs font-semibold transition-colors ${
+                  search.letter?.toUpperCase() === letter
+                    ? "bg-gold text-bg"
+                    : "text-muted hover:bg-surface-2 hover:text-gold-2"
+                }`}
+                onClick={() =>
+                  void navigate({
+                    search: {
+                      ...search,
+                      letter,
+                      page: undefined,
+                    },
+                  })
+                }
+              >
+                {letter}
+              </button>
+            ))}
+          </div>
+        </div>
+
         <div className="mt-8">
           {games.length === 0 ? (
             <EmptyState title="No games available yet." body="No published projects match these filters." />
           ) : (
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-4 grid-cols-4 sm:grid-cols-4 md:grid-cols-5 xl:grid-cols-5">
               {games.map((game) => (
                 <GameCard key={game.id} game={game} />
               ))}
