@@ -99,7 +99,7 @@ function GamesPage() {
           {games.length === 0 ? (
             <EmptyState title="No games available yet." body="No published projects match these filters." />
           ) : (
-            <div className="grid gap-4 grid-cols-4 sm:grid-cols-4 md:grid-cols-5 xl:grid-cols-5">
+            <div className="grid gap-4 grid-cols-1">
               {games.map((game) => (
                 <GameCard key={game.id} game={game} />
               ))}
