@@ -6,11 +6,11 @@ import { tx } from "@/lib/i18n";
 
 export function GameCard({ game }: { game: Game }) {
   return (
-    <article className="group overflow-hidden rounded-lg border border-border bg-surface transition-all duration-200 hover:-translate-y-1 hover:border-gold/50 hover:shadow-gold">
+    <article className="group flex overflow-hidden rounded-lg border border-border bg-surface transition-all duration-200 hover:-translate-y-0.5 hover:border-gold/50 hover:shadow-gold">
       <Link
         to="/games/$slug"
         params={{ slug: game.slug }}
-        className="block aspect-[2/3] overflow-hidden bg-surface-2"
+        className="block h-40 w-28 shrink-0 overflow-hidden bg-surface-2 sm:h-44 sm:w-32"
       >
         <img
           src={coverSrc(game.cover)}
@@ -20,7 +20,7 @@ export function GameCard({ game }: { game: Game }) {
         />
       </Link>
 
-      <div className="flex min-h-[150px] flex-col p-3">
+      <div className="flex min-w-0 flex-1 flex-col p-4">
         <div className="mb-1 flex items-center gap-1.5 overflow-hidden text-[10px] uppercase tracking-wider">
           <span className="shrink-0 text-gold">
             {tx(game.platform_name ?? "")}
@@ -31,7 +31,7 @@ export function GameCard({ game }: { game: Game }) {
           </span>
         </div>
 
-        <h3 className="line-clamp-2 font-display text-base leading-snug text-fg">
+        <h3 className="line-clamp-2 font-display text-base leading-snug text-fg sm:text-lg">
           <Link
             to="/games/$slug"
             params={{ slug: game.slug }}
@@ -41,7 +41,7 @@ export function GameCard({ game }: { game: Game }) {
           </Link>
         </h3>
 
-        <p className="mt-1.5 line-clamp-2 text-xs leading-relaxed text-muted">
+        <p className="mt-1.5 line-clamp-3 text-xs leading-relaxed text-muted sm:text-sm">
           {game.description}
         </p>
 
@@ -66,12 +66,12 @@ export function GameCard({ game }: { game: Game }) {
 
 export function GameCardSkeleton() {
   return (
-    <div className="overflow-hidden rounded-lg border border-border bg-surface">
-      <div className="aspect-[2/3] animate-pulse bg-surface-2" />
-      <div className="space-y-2 p-3">
-        <div className="h-2.5 w-20 animate-pulse rounded bg-surface-2" />
-        <div className="h-4 w-3/4 animate-pulse rounded bg-surface-2" />
-        <div className="h-8 w-full animate-pulse rounded bg-surface-2" />
+    <div className="flex overflow-hidden rounded-lg border border-border bg-surface">
+      <div className="h-40 w-28 shrink-0 animate-pulse bg-surface-2 sm:h-44 sm:w-32" />
+      <div className="flex-1 space-y-2 p-4">
+        <div className="h-2.5 w-24 animate-pulse rounded bg-surface-2" />
+        <div className="h-5 w-3/4 animate-pulse rounded bg-surface-2" />
+        <div className="h-10 w-full animate-pulse rounded bg-surface-2" />
       </div>
     </div>
   );
