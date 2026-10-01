@@ -208,7 +208,7 @@ function FeaturedCarousel({
     timerRef.current = setTimeout(() => {
       setDisplayActive((current) => (current + step + count) % count);
       setIsAnimating(false);
-    }, 1000);
+    }, 700);
   };
 
   const getOffset = (index: number) => {
@@ -334,7 +334,7 @@ function FeaturedCarousel({
                   WebkitBackfaceVisibility: "hidden",
                   transition: isDragging
                     ? "none"
-                    : "transform 1000ms cubic-bezier(0.22, 1, 0.36, 1), opacity 1000ms ease",
+                    : "transform 700ms cubic-bezier(0.22, 1, 0.36, 1), opacity 700ms ease",
                 }}
               >
                 <Link
