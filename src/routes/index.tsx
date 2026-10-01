@@ -78,7 +78,7 @@ function Home() {
               className="hidden items-center gap-1 text-sm text-gold hover:text-gold-2 sm:inline-flex"
             >
               All games
-              <ArrowRight className="size-4" />
+              <ArrowLeft className="size-4" />
             </Link>
           </div>
 
@@ -111,7 +111,7 @@ function Home() {
               className="hidden items-center gap-1 text-sm text-gold hover:text-gold-2 sm:inline-flex"
             >
               View all
-              <ArrowRight className="size-4" />
+              <ArrowLeft className="size-4" />
             </Link>
           </div>
 
@@ -386,7 +386,7 @@ function FeaturedCarousel({
         <div className="mt-5 flex items-center gap-5">
           <button
             type="button"
-            aria-label="Previous featured game"
+            aria-label="اللعبة المميزة السابقة"
             onClick={() => move(-1)}
             className="flex size-11 items-center justify-center rounded-full border border-border bg-surface text-fg transition-all hover:border-gold/60 hover:bg-surface-2 hover:text-gold active:scale-95"
           >
@@ -414,7 +414,7 @@ function FeaturedCarousel({
 
           <button
             type="button"
-            aria-label="Next featured game"
+            aria-label="اللعبة المميزة التالية"
             onClick={() => move(1)}
             className="flex size-11 items-center justify-center rounded-full border border-border bg-surface text-fg transition-all hover:border-gold/60 hover:bg-surface-2 hover:text-gold active:scale-95"
           >
