@@ -31,6 +31,36 @@ export const Route = createFileRoute("/games/$slug")({
   component: GameDetailPage,
 });
 
+function getYouTubeEmbedUrl(url: string | null) {
+  if (!url) return null;
+
+  try {
+    const parsed = new URL(url);
+    const hostname = parsed.hostname.toLowerCase();
+
+    if (hostname === "youtu.be") {
+      const id = parsed.pathname.slice(1).split("/")[0];
+      return id ? `https://www.youtube.com/embed/${id}` : null;
+    }
+
+    if (
+      hostname === "youtube.com" ||
+      hostname === "www.youtube.com" ||
+      hostname === "m.youtube.com"
+    ) {
+      const id = parsed.searchParams.get("v");
+      if (id) return `https://www.youtube.com/embed/${id}`;
+
+      const match = parsed.pathname.match(/^\/embed\/([^/]+)/);
+      if (match) return `https://www.youtube.com/embed/${match[1]}`;
+    }
+  } catch {
+    return null;
+  }
+
+  return null;
+}
+
 function GameDetailPage() {
   const { game, versions } = Route.useLoaderData();
   const visibleVersions = versions.filter((v) => v.files.length > 0);
@@ -64,6 +94,25 @@ function GameDetailPage() {
             </dl>
           </div>
         </div>
+
+        {game.youtube_video_url ? (
+          <section className="mt-14 space-y-3">
+            <p className="text-xs tracking-[0.28em] text-gold uppercase">{"فيديو إرشادي"}</p>
+            <h2 className="font-display text-3xl text-fg">{"شرح طريقة التحميل"}</h2>
+            {getYouTubeEmbedUrl(game.youtube_video_url) ? (
+              <div className="mt-5 aspect-video overflow-hidden rounded-xl border border-border bg-black">
+                <iframe
+                  src={getYouTubeEmbedUrl(game.youtube_video_url) ?? undefined}
+                  title="شرح طريقة التحميل"
+                  className="size-full"
+                  loading="lazy"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                />
+              </div>
+            ) : null}
+          </section>
+        ) : null}
 
         <section className="mt-14">
           <p className="text-xs tracking-[0.28em] text-gold uppercase">{"الأرشيف"}</p>
