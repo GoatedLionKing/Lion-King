@@ -321,7 +321,7 @@ function FeaturedCarousel({
                   WebkitBackfaceVisibility: "hidden",
                   transition: isDragging
                     ? "none"
-                    : "transform 420ms cubic-bezier(0.22, 1, 0.36, 1), opacity 320ms ease",
+                    : "transform 1000ms cubic-bezier(0.22, 1, 0.36, 1), opacity 800ms ease",
                 }}
               >
                 <Link
