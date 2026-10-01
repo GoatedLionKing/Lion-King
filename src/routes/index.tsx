@@ -176,6 +176,7 @@ function FeaturedCarousel({
   const [active, setActive] = useState(0);
   const [direction, setDirection] = useState<1 | -1>(1);
   const [dragStart, setDragStart] = useState<number | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
 
   const count = games.length;
 
@@ -208,27 +209,33 @@ function FeaturedCarousel({
 
   const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
     setDragStart(event.clientX);
+    setIsDragging(true);
   };
 
   const handlePointerUp = (event: React.PointerEvent<HTMLDivElement>) => {
     if (dragStart === null) {
+      setIsDragging(false);
       return;
     }
 
     const distance = event.clientX - dragStart;
+
     setDragStart(null);
+    setIsDragging(false);
 
     if (Math.abs(distance) < 45) {
       return;
     }
 
-    move(distance < 0 ? 1 : -1);
+    requestAnimationFrame(() => {
+      move(distance < 0 ? 1 : -1);
+    });
   };
 
   return (
     <div className="relative">
       <div
-        className="relative mx-auto h-[390px] w-full select-none touch-pan-y sm:h-[470px] md:h-[520px]"
+        className="relative mx-auto h-[390px] w-full select-none touch-pan-y overscroll-contain sm:h-[470px] md:h-[520px]"
         onPointerDown={handlePointerDown}
         onPointerUp={handlePointerUp}
         onPointerCancel={() => setDragStart(null)}
@@ -274,11 +281,15 @@ function FeaturedCarousel({
                 key={game.id}
                 className="absolute left-1/2 top-0 h-[310px] w-[207px] sm:h-[390px] sm:w-[260px] md:h-[430px] md:w-[287px]"
                 style={{
-                  transform: `translateX(calc(-50% + ${x})) scale(${scale})`,
+                  transform: `translate3d(calc(-50% + ${x}), 0, 0) scale(${scale})`,
                   opacity,
                   zIndex,
-                  transition:
-                    "transform 500ms cubic-bezier(0.22, 1, 0.36, 1), opacity 400ms ease",
+                  willChange: "transform, opacity",
+                  backfaceVisibility: "hidden",
+                  WebkitBackfaceVisibility: "hidden",
+                  transition: isDragging
+                    ? "none"
+                    : "transform 420ms cubic-bezier(0.22, 1, 0.36, 1), opacity 320ms ease",
                 }}
               >
                 <Link
