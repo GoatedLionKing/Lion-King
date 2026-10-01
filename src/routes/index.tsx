@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { EmptyState } from "@/components/games/empty-state";
 import { StatusBadge } from "@/components/games/status-badge";
 import { PublicShell } from "@/components/layout/public-shell";
@@ -176,7 +176,9 @@ function FeaturedCarousel({
   const [active, setActive] = useState(0);
   const [direction, setDirection] = useState<1 | -1>(1);
   const [dragStart, setDragStart] = useState<number | null>(null);
+  const [dragX, setDragX] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
+  const didDrag = useRef(false);
 
   const count = games.length;
 
@@ -209,7 +211,24 @@ function FeaturedCarousel({
 
   const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
     setDragStart(event.clientX);
+    setDragX(0);
     setIsDragging(true);
+    didDrag.current = false;
+    event.currentTarget.setPointerCapture(event.pointerId);
+  };
+
+  const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (dragStart === null) {
+      return;
+    }
+
+    const distance = event.clientX - dragStart;
+
+    if (Math.abs(distance) > 4) {
+      didDrag.current = true;
+    }
+
+    setDragX(distance);
   };
 
   const handlePointerUp = (event: React.PointerEvent<HTMLDivElement>) => {
@@ -223,13 +242,28 @@ function FeaturedCarousel({
     setDragStart(null);
     setIsDragging(false);
 
-    if (Math.abs(distance) < 45) {
-      return;
+    if (Math.abs(distance) >= 60) {
+      requestAnimationFrame(() => {
+        move(distance < 0 ? 1 : -1);
+        setDragX(0);
+      });
+    } else {
+      setDragX(0);
     }
 
-    requestAnimationFrame(() => {
-      move(distance < 0 ? 1 : -1);
-    });
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+      event.currentTarget.releasePointerCapture(event.pointerId);
+    }
+  };
+
+  const handlePointerCancel = (event: React.PointerEvent<HTMLDivElement>) => {
+    setDragStart(null);
+    setDragX(0);
+    setIsDragging(false);
+
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+      event.currentTarget.releasePointerCapture(event.pointerId);
+    }
   };
 
   return (
@@ -237,8 +271,9 @@ function FeaturedCarousel({
       <div
         className="relative mx-auto h-[390px] w-full select-none touch-pan-y overscroll-contain sm:h-[470px] md:h-[520px]"
         onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
-        onPointerCancel={() => setDragStart(null)}
+        onPointerCancel={handlePointerCancel}
       >
         <div className="absolute inset-x-0 top-0 h-full overflow-hidden">
           {games.map((game, index) => {
@@ -249,32 +284,30 @@ function FeaturedCarousel({
               return null;
             }
 
+            const dragProgress = isDragging ? dragX / 300 : 0;
+            const visualOffset = offset + dragProgress;
+            const distance = Math.abs(visualOffset);
+
             const x =
-              offset === 0
-                ? "0%"
-                : offset === -1
-                  ? "-54%"
-                  : offset === 1
-                    ? "54%"
-                    : offset === -2
-                      ? "-88%"
-                      : "88%";
+              visualOffset <= -1
+                ? `${-54 + Math.max(-1, visualOffset + 1) * 34}%`
+                : visualOffset < 0
+                  ? `${visualOffset * 54}%`
+                  : visualOffset < 1
+                    ? `${visualOffset * 54}%`
+                    : `${54 + Math.min(1, visualOffset - 1) * 34}%`;
 
             const scale =
-              offset === 0
-                ? 1
-                : Math.abs(offset) === 1
-                  ? 0.78
-                  : 0.62;
+              distance < 1
+                ? 1 - distance * 0.22
+                : 0.78 - Math.min(1, distance - 1) * 0.16;
 
             const opacity =
-              offset === 0
-                ? 1
-                : Math.abs(offset) === 1
-                  ? 0.55
-                  : 0.28;
+              distance < 1
+                ? 1 - distance * 0.45
+                : 0.55 - Math.min(1, distance - 1) * 0.27;
 
-            const zIndex = 20 - Math.abs(offset);
+            const zIndex = 20 - Math.round(distance);
 
             return (
               <div
@@ -300,6 +333,12 @@ function FeaturedCarousel({
                     isActive ? "cursor-pointer" : "cursor-pointer"
                   }`}
                   onClick={(event) => {
+                    if (didDrag.current) {
+                      event.preventDefault();
+                      didDrag.current = false;
+                      return;
+                    }
+
                     if (!isActive) {
                       event.preventDefault();
                       move(offset > 0 ? 1 : -1);
